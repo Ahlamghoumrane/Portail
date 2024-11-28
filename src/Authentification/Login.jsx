@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { supabase } from "../supabaseClient"; 
 import { useNavigate } from "react-router-dom"; 
-import logo from "../assets/icons.jpg";
+import logo from "../assets/logo.jpg";
 import "../styles/styles.css"; 
 
 const Login = () => {
@@ -20,12 +20,13 @@ const Login = () => {
     if (error) {
       setError("Invalid email or password");
     } else {
-      alert("Login successful!");
+      
       navigate("/platform"); 
     }
   };
 
   return (
+    <div className="login">
     <div className="login-container">
       <img
         src={logo} 
@@ -63,6 +64,7 @@ const Login = () => {
         </button>
         {error && <p className="error-message">{error}</p>}
       </form>
+    </div>
     </div>
   );
 };

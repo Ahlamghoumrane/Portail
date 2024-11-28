@@ -1,89 +1,198 @@
+
 body {
-    background-image: url("../assets/img.jpg");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    margin: 0;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.login {
+  background:#FBF4EB; 
+  min-height: 100vh;
+  min-width: 800vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-container {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  width: 100%;
+  max-width: 400px;
+  min-height: 400px; 
+}
+
+.logo {
+  margin-bottom: 1rem;
+  width: 80px;
+}
+
+h1 {
+  color: #003348;
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+label {
+  font-size: 0.9rem;
+  font-weight: bold;
+  text-align: left;
+}
+
+input {
+  padding: 0.8rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+input:focus {
+  outline: none;
+  border-color: #003348;
+}
+
+.forgot-password {
+  text-align: right;
+  margin-top: -0.8rem;
+  font-size: 0.9rem;
+}
+
+.forgot-password a {
+  text-decoration: none;
+  color: #003348;
+}
+
+.forgot-password a:hover {
+  text-decoration: underline;
+}
+
+.login-button {
+  padding: 0.8rem;
+  background-color: #003348;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.login-button:disabled {
+  background-color: #003348;
+  cursor: not-allowed;
+}
+
+.login-button:hover:not(:disabled) {
+  background-color: #004466;
+}
+
+.error-message {
+  color: red;
+  font-size: 0.9rem;
+  margin-top: 1rem;
+}
+
+.error-text {
+  font-size: 0.8rem;
+  color: red;
+}
+
+.platform-container {
+  background: #FFFFFF; 
+  min-height: 100vh; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.logout-button {
+  background-color: #003348;
+  color: #FFFFFF;
+  border: none;
+  padding: 10px 20px;
+  font-size: 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
+
+.logout-button:hover {
+  background-color: #004466;
+}
+
+/* Media Queries pour rendre le site responsive sur mobile */
+@media screen and (max-width: 768px) {
+  .login-container, .platform-container {
+    padding: 1.5rem;
+    max-width: 90%;
   }
-  
-  .login-container {
-    background: #fff;
-    padding: 2rem;
-    border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    width: 100%;
-    max-width: 400px;
-  }
-  
-  .logo {
-    margin-bottom: 1rem;
-    width: 80px;
-  }
-  
+
   h1 {
-    color:#4977b8;
-    font-size: 1.8rem;
-    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
   }
-  
-  form {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-  
-  label {
-    font-size: 0.9rem;
-    font-weight: bold;
-    text-align: left;
-  }
-  
+
   input {
-    padding: 0.8rem;
-    font-size: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-  }
-  
-  input:focus {
-    outline: none;
-    border-color:#4977b8;
-  }
-  
-  
-  .login-button {
-    padding: 0.8rem;
-    background-color: #4977b8;
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .login-button:disabled {
-    background-color: #b0c4de;
-    cursor: not-allowed;
-  }
-  
-  .login-button:hover:not(:disabled) {
-    background-color: #4977b8;
-  }
-  
-  .error-message {
-    color: red;
+    padding: 0.7rem;
     font-size: 0.9rem;
-    margin-top: 1rem;
   }
-  
-  .error-text {
+
+  .login-button {
+    padding: 0.7rem;
+    font-size: 0.9rem;
+  }
+
+  .logout-button {
+    padding: 8px 16px;
+    font-size: 0.9rem;
+    top: 10px;
+    right: 10px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .logo {
+    width: 60px;
+  }
+
+  h1 {
+    font-size: 1.3rem;
+  }
+
+  .login-container, .platform-container {
+    padding: 1rem;
+    max-width: 90%;
+  }
+
+  input {
+    padding: 0.6rem;
+    font-size: 0.9rem;
+  }
+
+  .login-button {
+    padding: 0.6rem;
+    font-size: 0.9rem;
+  }
+
+  .logout-button {
+    padding: 6px 12px;
     font-size: 0.8rem;
-    color: red;
+    top: 5px;
+    right: 5px;
   }
-  
+}

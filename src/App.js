@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Login from './components/Login';
-import PlatformPage from './components/PlatformPage';
+import Login from './Authentification/Login';
+import PlatformPage from './portail/PlatformPage';
 
 function App() {
   return (
