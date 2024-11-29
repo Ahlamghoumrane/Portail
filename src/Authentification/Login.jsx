@@ -26,6 +26,7 @@ const Login = () => {
   };
 
   return (
+    <div className="login-page">
     <div className="login">
     <div className="login-container">
       <img
@@ -33,23 +34,23 @@ const Login = () => {
         alt="Logo"
         className="logo"
       />
-      <h1>Log in</h1>
+      <h1>Bienvenue sur ID AMAN</h1>
       <form onSubmit={(e) => e.preventDefault()}>
-        <label htmlFor="email">Email address</label>
+        <label htmlFor="email">Adresse mail</label>
         <input
           type="email"
           id="email"
-          placeholder="Enter your email"
+          placeholder="Entrez votre email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
         {error && <span className="error-text">Required</span>}
 
-        <label htmlFor="password">Password</label>
+        <label htmlFor="password">Mot de passe </label>
         <input
           type="password"
           id="password"
-          placeholder="Enter your password"
+          placeholder="Entrez votre mot de passe"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
@@ -60,10 +61,11 @@ const Login = () => {
           onClick={handleLogin}
           disabled={!email || !password}
         >
-          Log in
+          Se connecter
         </button>
         {error && <p className="error-message">{error}</p>}
       </form>
+    </div>
     </div>
     </div>
   );

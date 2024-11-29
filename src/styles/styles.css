@@ -1,5 +1,21 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-body {
+body .login-page {
+  background-color: #003348;  
+  font-family: 'Arial', sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;   
+  height: 100vh;  
+}
+
+body .platform-page {
+  background-color: #FFFFFF;
   font-family: 'Arial', sans-serif;
   margin: 0;
   padding: 0;
@@ -8,25 +24,15 @@ body {
   align-items: center;
   min-height: 100vh;
 }
-
-.login {
-  background:#FBF4EB; 
-  min-height: 100vh;
-  min-width: 800vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
 .login-container {
-  background: #fff;
+  background-color: #FFFFFF;
   padding: 2rem;
   border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
   text-align: center;
-  width: 100%;
-  max-width: 400px;
-  min-height: 400px; 
+  width: 100%; 
+  max-width: 600px;  
+  min-height: 400px;
 }
 
 .logo {
@@ -64,21 +70,6 @@ input:focus {
   border-color: #003348;
 }
 
-.forgot-password {
-  text-align: right;
-  margin-top: -0.8rem;
-  font-size: 0.9rem;
-}
-
-.forgot-password a {
-  text-decoration: none;
-  color: #003348;
-}
-
-.forgot-password a:hover {
-  text-decoration: underline;
-}
-
 .login-button {
   padding: 0.8rem;
   background-color: #003348;
@@ -104,20 +95,6 @@ input:focus {
   font-size: 0.9rem;
   margin-top: 1rem;
 }
-
-.error-text {
-  font-size: 0.8rem;
-  color: red;
-}
-
-.platform-container {
-  background: #FFFFFF; 
-  min-height: 100vh; 
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
 .logout-button {
   background-color: #003348;
   color: #FFFFFF;
@@ -136,11 +113,10 @@ input:focus {
   background-color: #004466;
 }
 
-/* Media Queries pour rendre le site responsive sur mobile */
 @media screen and (max-width: 768px) {
-  .login-container, .platform-container {
+  .login-container {
     padding: 1.5rem;
-    max-width: 90%;
+    max-width: 90%; 
   }
 
   h1 {
@@ -174,7 +150,7 @@ input:focus {
     font-size: 1.3rem;
   }
 
-  .login-container, .platform-container {
+  .login-container {
     padding: 1rem;
     max-width: 90%;
   }
@@ -195,4 +171,4 @@ input:focus {
     top: 5px;
     right: 5px;
   }
-}
+} 
