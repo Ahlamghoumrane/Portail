@@ -1,9 +1,11 @@
 * {
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
 }
 
+body {
+  font-family: 'Arial', sans-serif;
+}
 body .login-page {
   background-color: #003348;  
   font-family: 'Arial', sans-serif;
@@ -14,16 +16,6 @@ body .login-page {
   height: 100vh;  
 }
 
-body .platform-page {
-  background-color: #FFFFFF;
-  font-family: 'Arial', sans-serif;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-}
 .login-container {
   background-color: #FFFFFF;
   padding: 2rem;
@@ -39,35 +31,54 @@ body .platform-page {
   margin-bottom: 1rem;
   width: 80px;
 }
-
 h1 {
   color: #003348;
   font-size: 1.8rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem; /* Augmenter l'espace entre le titre et le paragraphe */
 }
 
-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+p {
+  color: #003348;
+  margin-bottom: 1.5rem; /* Augmenter l'espace entre le paragraphe et le premier champ */
 }
 
-label {
-  font-size: 0.9rem;
-  font-weight: bold;
-  text-align: left;
+.login-form .input-container {
+  position: relative;
+  margin-bottom: 1rem; /* Espacement entre les champs */
 }
 
-input {
-  padding: 0.8rem;
+.input-container input {
+  width: 100%;
+  padding: 1rem 10px;
   font-size: 1rem;
-  border: 1px solid #ccc;
+  border: 2px solid #fff;
   border-radius: 8px;
+  outline: none;
+  transition: border-color 0.3s ease;
 }
 
-input:focus {
-  outline: none;
+.input-container input:focus {
   border-color: #003348;
+}
+
+.input-container label {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1rem;
+  color: #888;
+  pointer-events: none;
+  transition: all 0.3s ease;
+}
+
+.input-container input:focus + label,
+.input-container label.active {
+  top: 0;
+  font-size: 0.8rem;
+  color: #003348;
+  background-color: white;
+  padding: 0 5px;
 }
 
 .login-button {
@@ -75,7 +86,7 @@ input:focus {
   background-color: #003348;
   color: #fff;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   font-size: 1rem;
   cursor: pointer;
   transition: background-color 0.3s ease;
@@ -94,23 +105,6 @@ input:focus {
   color: red;
   font-size: 0.9rem;
   margin-top: 1rem;
-}
-.logout-button {
-  background-color: #003348;
-  color: #FFFFFF;
-  border: none;
-  padding: 10px 20px;
-  font-size: 1rem;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  position: absolute;
-  top: 20px;
-  right: 20px;
-}
-
-.logout-button:hover {
-  background-color: #004466;
 }
 
 @media screen and (max-width: 768px) {
@@ -141,34 +135,3 @@ input:focus {
   }
 }
 
-@media screen and (max-width: 480px) {
-  .logo {
-    width: 60px;
-  }
-
-  h1 {
-    font-size: 1.3rem;
-  }
-
-  .login-container {
-    padding: 1rem;
-    max-width: 90%;
-  }
-
-  input {
-    padding: 0.6rem;
-    font-size: 0.9rem;
-  }
-
-  .login-button {
-    padding: 0.6rem;
-    font-size: 0.9rem;
-  }
-
-  .logout-button {
-    padding: 6px 12px;
-    font-size: 0.8rem;
-    top: 5px;
-    right: 5px;
-  }
-} 

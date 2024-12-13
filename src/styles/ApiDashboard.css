@@ -1,0 +1,136 @@
+.api-dashboard {
+  font-family: Arial, sans-serif;
+  padding: 100px;
+  margin-left:200px;
+  color: #333;
+}
+
+.api-usage,
+.api-metrics,
+.api-keys {
+  margin: 20px 0;
+  background: #fff;
+  border-radius: 5px;
+  padding: 20px;
+  max-width: 800px; 
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  margin-bottom: 10px;
+  color: #003348;
+}
+
+.usage-info p {
+  margin: 5px 0;
+}
+
+.metrics-chart {
+  text-align: center;
+  padding: 20px;
+}
+
+.keys-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.key-card {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  background: #f1f1f1;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.key-card h3 {
+  margin: 0;
+}
+
+.key-card p {
+  margin: 0;
+  color: #555555;
+}
+.api-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.api-image {
+  width: 100px;
+  height: 100px;
+}
+
+.api-name {
+  margin-top: 10px;
+  font-size: 16px;
+  color: #003348;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+ul li {
+  margin: 15px 0;
+}
+
+ul li a {
+  text-decoration: none;
+  color: #333;
+  display: flex;
+  align-items: center;
+}
+
+ul li a:hover {
+  color:#003348 ;
+}
+.api-metrics {
+  margin-right: 20px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.api-metrics h2 {
+  color: #003348;
+}
+
+.metrics-filter {
+  display: flex;
+  justify-content: right;
+  margin-bottom: 20px;
+}
+
+.metrics-filter button {
+  padding: 10px 20px;
+  margin: 0 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #fff;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.metrics-filter button.active-filter {
+  background-color:#003348;
+  color: #fff;
+  border: none;
+}
+
+.metrics-filter button:hover {
+  background-color:#003348;
+  color: #fff;
+}
+
+.metrics-chart {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

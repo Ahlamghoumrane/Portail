@@ -1,25 +1,20 @@
-import React, { useEffect } from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import Login from "./Authentification/Login";
-import PlatformPage from "./portail/PlatformPage";
-import "./styles/styles.css"; 
-
-
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Login from './components/Login';
+import Catalog from './components/Catalog';
+import ApiDashboard from './components/ApiDashboard';
+import Documentation from './components/Documentation';
+import LiveInterface from './components/LiveInterface';
 
 const App = () => {
-  useEffect(() => {
-    
-    document.body.classList.add("login"); 
-    return () => {
-      document.body.classList.remove("login"); 
-    };
-  }, []);
-
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Login/>} />
-        <Route path="/platform" element={<PlatformPage />} />
+        <Route path="/" element={<Login />} />
+        <Route path="/catalog" element={<Catalog />} />
+        <Route path="/ApiDashboard" element={<ApiDashboard />} />
+        <Route path="/Documentation" element={<Documentation />} />
+        <Route path="/LiveInterface" element={<LiveInterface />} />
       </Routes>
     </Router>
   );
