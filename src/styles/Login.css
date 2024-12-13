@@ -34,19 +34,22 @@ body .login-page {
 h1 {
   color: #003348;
   font-size: 1.8rem;
-  margin-bottom: 1rem; /* Augmenter l'espace entre le titre et le paragraphe */
+  margin-bottom: 1rem; 
 }
 
 p {
   color: #003348;
-  margin-bottom: 1.5rem; /* Augmenter l'espace entre le paragraphe et le premier champ */
+  margin-bottom: 1.5rem; 
 }
 
 .login-form .input-container {
   position: relative;
-  margin-bottom: 1rem; /* Espacement entre les champs */
+  margin-bottom: 1rem; 
 }
-
+.input-container {
+  position: relative;
+  margin-bottom: 1rem;
+}
 .input-container input {
   width: 100%;
   padding: 1rem 10px;
@@ -55,6 +58,8 @@ p {
   border-radius: 8px;
   outline: none;
   transition: border-color 0.3s ease;
+  border-color: #003348;
+  color:#004466;
 }
 
 .input-container input:focus {
