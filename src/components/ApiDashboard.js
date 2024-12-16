@@ -2,8 +2,9 @@ import React, { useState, useEffect } from "react";
 import { useNavigate ,Link} from "react-router-dom";
 import "../styles/ApiDashboard.css";
 import logo from "../assets/logo1.jpg";
-import { FaHome, FaFileAlt, FaChartLine, FaSignOutAlt ,FaKey} from "react-icons/fa";
+import {  FaFileAlt, FaChartLine, FaSignOutAlt ,FaKey} from "react-icons/fa";
 import { useLocation } from "react-router-dom";
+
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 
 const ApiDashboard = () => {
@@ -99,10 +100,10 @@ const { apiName, apiImage } = location.state || {};
 )}      
        <ul>
           <li>
-            <Link to="/ApiDashboard" state={{ apiName, apiImage }}>
-              <FaHome style={{ marginRight: "10px" }}/>
-              Tableau de bord
-            </Link>
+          <Link to="/ApiDashboard" state={{ apiName, apiImage }}>
+
+  Tableau de bord
+</Link>
           </li>
           <li>
             <Link to="/Documentation" state={{ apiName, apiImage }}>
@@ -120,7 +121,7 @@ const { apiName, apiImage } = location.state || {};
         </aside>
         <div className="api-dashboard">
       <header className="dashboard-header">
-        <h2> <FaHome style={{ marginRight: "10px" }}/>Tableau de bord</h2>
+        <h2> Tableau de bord</h2>
         <p>Gérer l'utilisation et l'abonnement</p>
       </header>
         <section className="api-usage">
