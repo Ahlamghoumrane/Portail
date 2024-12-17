@@ -1,4 +1,5 @@
 
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&display=swap');
 body {
   font-family: Arial, sans-serif;
   margin: 0;
@@ -22,6 +23,7 @@ body {
 }
 
 .navbar-logo img {
+  margin-left: 20px;
   height: 60px;
   width: 150px;
 }
@@ -39,8 +41,9 @@ body {
 }
 
 .logout-button {
-  padding: 8px 20px;
-  font-size: 14px;
+  padding: 8px 10px;
+  margin-right: 20px;
+  font-size: 16px;
   color: white;
   background-color: #003348;
   border: none;
@@ -56,7 +59,8 @@ body {
 .catalog-container {
   display: flex;
   margin-top: 0px; 
-  margin-left: 0px; 
+  margin-left: 0px;
+  margin-right: 0px;
   box-sizing: border-box;
   overflow: hidden;
 }
@@ -70,7 +74,6 @@ body {
   left: 0;
   bottom: 0;
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-  padding: 10px 0px;
 }
 
 .profile-email {
@@ -80,28 +83,28 @@ body {
   margin-bottom: 20px;
 }
 
-.sidebar nav ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.sidebar nav ul li {
-  padding: 10px;
+.sidebar ul li a {
+  color:  #3333339b;
+  text-decoration: none;
   display: flex;
   align-items: center;
-  justify-content: center;
-  color: #003348;
-  font-size: 14px;
-  cursor: pointer;
-  border-radius: 5px;
-  transition: background-color 0.3s ease;
+  padding: 10px 20px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  background-color: transparent;
 }
 
-.sidebar nav ul li:hover {
-  background-color: #003348;
-  color: white;
+.sidebar ul li a.active-link {
+  color: #003348 ;
+  font-weight: bold;
 }
+
+.sidebar ul li a img {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+}
+
+
 
 .content-area {
   flex: 3;
@@ -117,9 +120,15 @@ body {
   gap: 30px;
   margin-bottom: 20px;
 }
-
+h1{
+  font-family: 'Montserrat', sans-serif; 
+  font-size: 28px;
+  font-weight: bold;
+}
 .tabs h3 {
-  font-size: 18px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
   color: #003348;
   cursor: pointer;
   transition: color 0.3s ease;
@@ -129,29 +138,33 @@ body {
 
 .tabs h3:hover {
   color: white;
- 
 }
 
-.tabs h3.active {
+.tabs h3.active-tab {
   font-weight: bold;
   border-bottom: 2px solid #003348;
   color: #003348;
-
 }
+
+.document-catalog {
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
 
 .api-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 20px;
   flex-grow: 1;
   overflow: hidden;
 }
 .api-card {
-  background-color: #003348;
+  background-color: #ffffff;
   border-radius: 20px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   padding: 10px;
-  text-align: center;
   transition: relative;
 }
 .see-api-button {
@@ -180,30 +193,34 @@ body {
 
 .api-card img {
   width: 100%;
-  max-height: 150px;
-  object-fit: cover;
+  max-height: 100px;
   border-radius: 8px;
   margin-bottom: 10px;
 }
-
-.api-card h3 {
-  font-size: 18px;
-  margin-bottom: 10px;
-  color:#D2B278;
+.api-card h2 {
+  display: flex;
+  align-items: center;
+  gap: 10px; 
+  font-size: 16px;
+  margin: 10px 0;
 }
 
+.api-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.api-name {
+  font-size: 18px; 
+}
 .api-card ul li{
-  font-size: 14px;
-  color: #ffffff;
-  text-align: left; 
+  font-family: 'Nunito Sans', sans-serif;
+  font-size: 16px;
+  font-weight:400 ;
+  color:#003348 ;
+  text-align:left ; 
 }
 
-.document-catalog {
-  
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
 
 
 @media (max-width: 768px) {

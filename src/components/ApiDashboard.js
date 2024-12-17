@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate ,Link} from "react-router-dom";
 import "../styles/ApiDashboard.css";
-import logo from "../assets/logo1.jpg";
-import {  FaFileAlt, FaChartLine, FaSignOutAlt ,FaKey} from "react-icons/fa";
+import logo from "../assets/Logo ID Aman (10).jpg";
+import Tableaudebord from "../assets/tableau de bord.jpg";
+import Tableaudebord1 from "../assets/tableau de bord1.jpg";
+import Documentation2 from "../assets/documentation2.jpg";
+import liveinterface from "../assets/Live interface.jpg";
+import { FaSignOutAlt ,FaKey} from "react-icons/fa";
 import { useLocation } from "react-router-dom";
-
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
+
 
 const ApiDashboard = () => {
   const [userEmail, setUserEmail] = useState(""); 
@@ -76,6 +80,10 @@ const { apiName, apiImage } = location.state || {};
     localStorage.removeItem("userEmail"); 
     navigate("/"); 
   };
+  const getLinkClass = (path) => {
+    return location.pathname === path ? "active-link" : "inactive-link";
+  };
+
 
   return (
     <div className="dashboard-container">
@@ -95,33 +103,29 @@ const { apiName, apiImage } = location.state || {};
         {apiName && apiImage && (
   <div className="api-info">
     <img src={apiImage} alt={apiName} style={{ width: "100px", height: "100px" }} />
-    <span>{apiName}</span>  
+    <span className="api-name"s>{apiName}</span>  
   </div>
 )}      
        <ul>
           <li>
-          <Link to="/ApiDashboard" state={{ apiName, apiImage }}>
-
-  Tableau de bord
-</Link>
+          <Link to="/ApiDashboard" state={{ apiName, apiImage }} className={getLinkClass("/ApiDashboard")}>
+          <img src={Tableaudebord} alt="Tableau de bord" style={{ width: "15px", height: "15px", marginRight: "0px" }} /> Tableau de bord </Link>
           </li>
           <li>
-            <Link to="/Documentation" state={{ apiName, apiImage }}>
-              <FaFileAlt style={{ marginRight: "10px" }} />
-              Documentation
+            <Link to="/Documentation" state={{ apiName, apiImage }}className={getLinkClass("/Documentation")}>
+            <img src={Documentation2} alt="Documentation" style={{ width: "15px", height: "15px", marginRight: "0px" }} />Documentation
             </Link>
           </li>
           <li>
-            <Link to="/LiveInterface" state={{ apiName, apiImage }}>
-              <FaChartLine style={{ marginRight: "10px" }}/>
-              Interface en direct
+            <Link to="/LiveInterface" state={{ apiName, apiImage }}className={getLinkClass("/LiveInterface")}>
+            <img src={liveinterface} alt="liveinterface" style={{ width: "10px", height: "12px", marginRight: "0px" }} />Interface en direct
             </Link>
           </li>
         </ul>
         </aside>
         <div className="api-dashboard">
       <header className="dashboard-header">
-        <h2> Tableau de bord</h2>
+        <h1><img src={Tableaudebord1} alt="Tableau de bord" style={{ width: "25px", height: "25px", marginRight: "6px" }} /> Tableau de bord</h1>
         <p>Gérer l'utilisation et l'abonnement</p>
       </header>
         <section className="api-usage">
@@ -166,13 +170,13 @@ const { apiName, apiImage } = location.state || {};
       </div>
     </section>
       <section className="api-keys">
-        <h2><FaKey size={30} />Clés API</h2>
+        <h3><FaKey size={20} />Clés API</h3>
         <p>Gérez vos clés API</p>
         <div className="keys-list">
           {apiKeys.map((key) => (
             <div className="key-card" key={key.id}>
               <div>
-                <h3>{key.name}</h3>
+                <h4>{key.name}</h4>
                 <p>Créée :  {key.createdAt}</p>
               </div>
             </div>

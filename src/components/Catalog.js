@@ -1,17 +1,24 @@
 import React, { useState, useEffect } from "react";
 import "../styles/Catalog.css";
-import logo from "../assets/logo1.jpg";
-import { FaListAlt, FaCogs,FaSignOutAlt} from "react-icons/fa";
-import id from "../assets/id.png";
-import passport from "../assets/id.png";
-import invoice from "../assets/facture.png";
-import sanction from "../assets/sanction.jpg";
-import { FaIdCard, FaUserCheck , FaMapMarkerAlt,FaExclamationTriangle } from 'react-icons/fa';
-import { useNavigate } from "react-router-dom";
+import logo from "../assets/Logo ID Aman (10).jpg";
+import { FaSignOutAlt } from "react-icons/fa";
+import profile from "../assets/profile.jpg";
+import home1 from "../assets/home1.jpg";
+import home from "../assets/home.jpg";
+import settings1 from "../assets/settings1.jpg";
+import settings from "../assets/settings.jpg";
+import Facematching from "../assets/image-api-face-matching.jpg";
+import Justificatifdedomicile from "../assets/image-api-proof-of-address.jpg";
+import Document from "../assets/image-api-business-document.jpg";
+import sanction from "../assets/image-api-pep-sanction-screening.jpg";
+import iconlogo from "../assets/icon.jpg";
+import { useNavigate, Link } from "react-router-dom";
+
 const Catalog = () => {
   const [userEmail, setUserEmail] = useState("");
   const [activeTab, setActiveTab] = useState("apis");
-  const navigate = useNavigate(); 
+  const [activeInnerTab, setActiveInnerTab] = useState("mesApis");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const email = localStorage.getItem("userEmail");
@@ -20,56 +27,49 @@ const Catalog = () => {
 
   const handleLogout = () => {
     localStorage.removeItem("userEmail");
-    navigate("/"); 
+    navigate("/");
   };
 
   const handleApiClick = (apiName, apiImage) => {
-    navigate(`/ApiDashboard`, { state: { apiName, apiImage } });
+    navigate("/ApiDashboard", { state: { apiName, apiImage } });
   };
-  
+
   const apis = [
     {
       id: 1,
-      name: "ID SCAN",
-      image:id,
+      name: "Visage & ID Matching",
+      image: Facematching,
       description: [
-        ".Scanner les documents",
-        ".Contrôler les documents et leur classification en temps réel",
-        ".Extraction de données",
+        "Vérifiez en temps réel la correspondance entre la photo en direct et le document d'identité pour prévenir toute tentative de fraude.",
       ],
-      icon: <FaIdCard />,
+      icon: <img src={iconlogo} alt="" />,
     },
     {
       id: 2,
-      image:passport,
-      name: "LIVENESS SCAN",
+      image: Justificatifdedomicile,
+      name: "Justificatif de domicile",
       description: [
-        ".Photo de la personne concernée",
-        ".Vérification en temps réel de la correspondance de la photo avec le document d'identité",
+        "Extrayez automatiquement les informations d'adresse, validez leur récence et récupérez les dates d'émission pour une conformité sans faille.",
       ],
-      icon: <FaUserCheck />,
+      icon: <img src={iconlogo} alt="" />,
     },
     {
       id: 3,
-      name: "ADDRESS SCAN",
-      image:invoice,
+      name: "Document d’entreprise ",
+      image: Document,
       description: [
-        ".Template Matching",
-        ".Extraction automatique de l'adresse",
-        ".Récupération de la date d'émission",
-        ".Vérification de récence",
+        "Analysez et extrayez automatiquement les informations clés telles que le numéro de registre de commerce, la dénomination sociale et la date d'enregistrement pour une validation rapide et précise.",
       ],
-      icon: <FaMapMarkerAlt />,
+      icon: <img src={iconlogo} alt="" />,
     },
     {
       id: 4,
-      image:sanction,
-      name: "PEP/SANCTION SCAN",
+      image: sanction,
+      name: "PPE & Sanction Screening",
       description: [
-        ".Screening des personnes physiques et morales pour identifier les personnes sanctionnées/PEPs",
-        ".Screening des personnes physiques et morales pour identifier les PEPs",
+        "Identifiez instantanément les personnes physiques et morales présentes sur les listes de sanctions et PEPs pour une gestion proactive des risques.",
       ],
-      icon: <FaExclamationTriangle />,
+      icon: <img src={iconlogo} alt="" />,
     },
   ];
 
@@ -80,9 +80,9 @@ const Catalog = () => {
           <img src={logo} alt="Logo" />
         </div>
         <div className="navbar-right">
-          <span className="user-email">{userEmail || "Utilisateur non connecté"}</span>
+          <span className="user-email">{userEmail}</span>
           <button className="logout-button" onClick={handleLogout}>
-            <FaSignOutAlt style={{ marginRight: "5px" }} />Déconnexion
+            <FaSignOutAlt style={{ marginRight: "5px" }} /> Déconnexion
           </button>
         </div>
       </header>
@@ -90,15 +90,47 @@ const Catalog = () => {
       <div className="catalog-container">
         <div className="sidebar">
           <div className="profile">
-          <i className="fa fa-user" style={{ fontSize: '60px', color: '#003348' }}></i>
+            <img
+              src={profile}
+              alt="Profile"
+              style={{
+                width: "80px",
+                height: "80px",
+                marginRight: "10px",
+                marginTop: "20px",
+              }}
+            />
             <p className="profile-email">{userEmail}</p>
             <nav>
               <ul>
-                <li onClick={() => setActiveTab("apis")}>
-                  <FaListAlt style={{ marginRight: "10px" }} /> APIs
-                </li>
-                <li onClick={() => setActiveTab("settings")}>
-                  <FaCogs style={{ marginRight: "10px" }} /> Paramètres
+                <li>
+                  <Link
+                    to="/Catalog"
+                    onClick={() => setActiveTab("apis")}
+                    className={activeTab === "apis" ? "active-link" : ""}
+                  >
+                    <img
+                      src={home}
+                      alt="home"
+                      style={{
+                        width: "20px",
+                        height: "20px",
+                        marginRight: "10px",
+                      }}
+                    />
+                    APIs
+                  </Link>
+                  <Link to="/Catalog" onClick={() => setActiveTab("settings")}
+                    className={activeTab === "settings" ? "active-link" : ""}
+                  >
+                    <img src={settings} alt="settings" style={{
+                        width: "20px",
+                        height: "20px",
+                        marginRight: "10px",
+                      }}
+                    />
+                    Paramètres
+                  </Link>
                 </li>
               </ul>
             </nav>
@@ -106,62 +138,93 @@ const Catalog = () => {
         </div>
 
         <div className="content-area">
-          <div className="header-tabs">
-            {activeTab !== "settings" && (
-              <>
-                <h1><FaListAlt style={{ marginRight: "10px" }} />APIs</h1>
-                <div className="tabs">
-                  <h3
-                    className={activeTab === "apis" ? "active-tab" : ""}
-                    onClick={() => setActiveTab("apis")}
-                    style={{ cursor: "pointer", marginRight: "20px" }}
-                  >
-                    Mes APIs
-                  </h3>
-                  <h3
-                    className={activeTab === "documents" ? "active-tab" : ""}
-                    onClick={() => setActiveTab("documents")}
-                    style={{ cursor: "pointer" }}
-                  >
-                    Catalogue de documents
-                  </h3>
-                </div>
-              </>
-            )}
-          </div>
-          {activeTab === "apis" ? (
-            <div className="api-grid">
-              {apis.map((api) => (
-                <div key={api.id} className="api-card">
-                  <div className="image-container">
-                    <img src={api.image} alt={api.name} />
-                    <button
-                      className="see-api-button"
-                      onClick={() => handleApiClick(api.name,api.image)}
-                    >
-                      Voir l'API
-                    </button>
-                  </div>
+          {activeTab === "apis" && (
+            <>
+              <h1>
+                <img
+                  src={home1}
+                  alt="home"
+                  style={{ width: "25px", height: "25px", marginRight: "10px" }}
+                />
+                APIs
+              </h1>
+              <div className="tabs">
+                <h3
+                  className={activeInnerTab === "mesApis" ? "active-tab" : ""}
+                  onClick={() => setActiveInnerTab("mesApis")}
+                  style={{ cursor: "pointer", marginRight: "20px" }}
+                >
+                  Mes APIs
+                </h3>
+                <h3
+                  className={
+                    activeInnerTab === "documents" ? "active-tab" : ""
+                  }
+                  onClick={() => setActiveInnerTab("documents")}
+                  style={{ cursor: "pointer" }}
+                >
+                  Catalogue de documents
+                </h3>
+              </div>
 
-                  <h3>{api.icon}{api.name}</h3>
-                  <ul>
-    {api.description.map((desc, index) => (
-      <li key={index}>{desc}</li>
-    ))}
-  </ul>
+              {activeInnerTab === "mesApis" && (
+                <div className="api-grid">
+                 
                 </div>
-              ))}
-            </div>
-          ) : activeTab === "documents" ? (
-            <div className="document-catalog">
-              <h2>Catalogue de documents</h2>
-            
-            </div>
-          ) : activeTab === "settings" ? (
+              )}
+              {activeInnerTab === "documents" && (
+                <div className="api-grid">
+                  {apis.map((api) => (
+                    <div
+                      key={api.id}
+                      className="api-card"
+                      onClick={() => handleApiClick(api.name, api.image)}
+                      style={{ cursor: "pointer" }}
+                    >
+                      <div className="image-container">
+                        <img src={api.image} alt={api.name} />
+                        <button
+                          className="see-api-button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleApiClick(api.name, api.image);
+                          }}
+                        >
+                          Voir l'API
+                        </button>
+                      </div>
+                      <h2>
+                        <span className="api-icon"> {api.icon}</span>
+                        <span className="api-name">{api.name}</span>
+                      </h2>
+                      <ul>
+                        {api.description.map((desc, index) => (
+                          <li key={index}>{desc}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </>
+          )}
+
+          {activeTab === "settings" && (
             <div className="settings-page">
-              <h1><FaCogs style={{ marginRight: "10px" }} />Paramètres </h1>
+              <h1>
+                <img
+                  src={settings1}
+                  alt="settings"
+                  style={{
+                    width: "25px",
+                    height: "25px",
+                    marginRight: "10px",
+                  }}
+                />
+                Paramètres
+              </h1>
             </div>
-          ) : null}
+          )}
         </div>
       </div>
     </div>
@@ -169,4 +232,3 @@ const Catalog = () => {
 };
 
 export default Catalog;
-

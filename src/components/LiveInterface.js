@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate,Link } from "react-router-dom";
 import "../styles/LiveInterface.css";
-import logo from "../assets/logo1.jpg";
+import logo from "../assets/Logo ID Aman (10).jpg";
 import liveInterface from "../assets/live interface.png";
-import { FaHome, FaFileAlt, FaChartLine, FaSignOutAlt,FaCamera,FaFileUpload } from "react-icons/fa";
+import Tableaudebord from "../assets/tableau de bord.jpg";
+import Documentation2 from "../assets/documentation2.jpg";
+import liveinterface from "../assets/Live interface.jpg";
+import {  FaSignOutAlt,FaCamera,FaFileUpload } from "react-icons/fa";
 import { useLocation } from "react-router-dom";
 
 const LiveInterface = () => {
@@ -21,6 +24,9 @@ const LiveInterface = () => {
   const handleLogout = () => {
     localStorage.removeItem("userEmail"); 
     navigate("/"); 
+  };
+   const getLinkClass = (path) => {
+    return location.pathname === path ? "active-link" : "inactive-link";
   };
 
   return (
@@ -41,26 +47,22 @@ const LiveInterface = () => {
         {apiName && apiImage && (
   <div className="api-info">
     <img src={apiImage} alt={apiName} style={{ width: "100px", height: "100px" }} />
-    <span>{apiName}</span>  
+    <span className="api-name">{apiName}</span>  
   </div>
 )}
-          <ul>
+        <ul>
           <li>
-            <Link to="/ApiDashboard" state={{ apiName, apiImage }}>
-              <FaHome style={{ marginRight: "10px" }} />
-              Tableau de bord
+          <Link to="/ApiDashboard" state={{ apiName, apiImage }} className={getLinkClass("/ApiDashboard")}>
+          <img src={Tableaudebord} alt="Tableau de bord" style={{ width: "15px", height: "15px", marginRight: "0px" }} /> Tableau de bord </Link>
+          </li>
+          <li>
+            <Link to="/Documentation" state={{ apiName, apiImage }}className={getLinkClass("/Documentation")}>
+            <img src={Documentation2} alt="Documentation" style={{ width: "15px", height: "15px", marginRight: "0px" }} />Documentation
             </Link>
           </li>
           <li>
-            <Link to="/Documentation" state={{ apiName, apiImage }}>
-              <FaFileAlt style={{ marginRight: "10px" }}/>
-              Documentation
-            </Link>
-          </li>
-          <li>
-            <Link to="/LiveInterface" state={{ apiName, apiImage }}>
-              <FaChartLine style={{ marginRight: "10px" }} />
-              Interface en direct
+            <Link to="/LiveInterface" state={{ apiName, apiImage }}className={getLinkClass("/LiveInterface")}>
+            <img src={liveinterface} alt="liveinterface" style={{ width: "10px", height: "12px" }} />Interface en direct
             </Link>
           </li>
         </ul>
@@ -96,7 +98,6 @@ const LiveInterface = () => {
         <div className="tab-content">
           {activeTab === "extracted" && (
             <div className="extracted-data">
-              <h2>Données extraites</h2>
               <ul>
               <li>
                 <strong>Country Code:</strong> GBR

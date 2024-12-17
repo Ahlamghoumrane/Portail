@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate,Link } from "react-router-dom";
 import "../styles/ApiDocumentation.css";
-import logo from "../assets/logo1.jpg";
-import { FaHome, FaFileAlt, FaChartLine, FaSignOutAlt } from "react-icons/fa";
+import logo from "../assets/Logo ID Aman (10).jpg";
+import Tableaudebord from "../assets/tableau de bord.jpg";
+import Documentation2 from "../assets/documentation2.jpg";
+import Documentation1 from "../assets/documentation1.jpg";
+import liveinterface from "../assets/Live interface.jpg";
+import { FaSignOutAlt } from "react-icons/fa";
 import { useLocation } from "react-router-dom";
 
 const Documentation = () => {
@@ -18,6 +22,9 @@ const { apiName, apiImage } = location.state || {};
   const handleLogout = () => {
     localStorage.removeItem("userEmail"); 
     navigate("/"); 
+  };
+  const getLinkClass = (path) => {
+    return location.pathname === path ? "active-link" : "inactive-link";
   };
 
   return (
@@ -43,27 +50,23 @@ const { apiName, apiImage } = location.state || {};
 )}
           <ul>
           <li>
-            <Link to="/ApiDashboard" state={{ apiName, apiImage }}>
-              <FaHome style={{ marginRight: "10px" }} />
-              Tableau de bord
+          <Link to="/ApiDashboard" state={{ apiName, apiImage }} className={getLinkClass("/ApiDashboard")} >
+          <img src={Tableaudebord} alt="Tableau de bord" style={{ width: "15px", height: "15px", marginRight: "0px" }} /> Tableau de bord </Link>
+          </li>
+          <li>
+            <Link to="/Documentation" state={{ apiName, apiImage }}className={getLinkClass("/Documentation")}>
+            <img src={Documentation2} alt="Documentation" style={{ width: "15px", height: "15px", marginRight: "0px" }} />Documentation
             </Link>
           </li>
           <li>
-            <Link to="/Documentation" state={{ apiName, apiImage }}>
-              <FaFileAlt style={{ marginRight: "10px" }}/>
-              Documentation
-            </Link>
-          </li>
-          <li>
-            <Link to="/LiveInterface" state={{ apiName, apiImage }}>
-              <FaChartLine style={{ marginRight: "10px" }} />
-              Interface en direct
+            <Link to="/LiveInterface" state={{ apiName, apiImage }} className={getLinkClass("/LiveInterface")}>
+            <img src={liveinterface} alt="liveinterface" style={{ width: "10px", height: "12px", marginRight: "0px" }} />Interface en direct
             </Link>
           </li>
         </ul>
         </aside>
         <main className="main-content">
-          <h2><FaFileAlt style={{ marginRight: "10px" }}/>Documentation de l'API</h2>
+          <h1><img src={Documentation1} alt="Documentation" style={{ width: "25px", height: "25px", marginRight: "10px" }} />Documentation de l'API</h1>
           <p> Comment utiliser votre API dans votre environnement</p>
         </main>
       </div>
