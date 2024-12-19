@@ -77,32 +77,26 @@ p{
   text-align: center;
 }
 
-.api-image {
-  width: 100px;
-  height: 100px;
-}
-
 .api-name {
-  margin-top: 10px;
+  margin-top: 20px;
   font-size: 16px;
   color: #003348;
+  margin-bottom: 20px;
 }
-
-ul {
-  list-style: none;
-  padding: 0;
-}
-
-
-ul li a {
+.sidebar ul li a {
   text-decoration: none;
-  color: #333;
   display: flex;
   align-items: center;
-  padding: 10px;
-  margin:10px;
+  padding: 10px 10px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  background-color: transparent;
 }
 
+.sidebar ul li a img {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+}
 ul li a:hover {
   color:#003348 ;
 }

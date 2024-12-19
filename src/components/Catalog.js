@@ -42,7 +42,7 @@ const Catalog = () => {
       description: [
         "Vérifiez en temps réel la correspondance entre la photo en direct et le document d'identité pour prévenir toute tentative de fraude.",
       ],
-      icon: <img src={iconlogo} alt="" />,
+      icon: <img src={iconlogo} alt="" style={{width: "15px",height: "px",objectFit: "contain",marginRight: "0px",}}/>,
     },
     {
       id: 2,
@@ -51,7 +51,7 @@ const Catalog = () => {
       description: [
         "Extrayez automatiquement les informations d'adresse, validez leur récence et récupérez les dates d'émission pour une conformité sans faille.",
       ],
-      icon: <img src={iconlogo} alt="" />,
+      icon: <img src={iconlogo} alt=""style={{width: "15px",height: "20px",objectFit: "contain",marginRight: "0px",}} />,
     },
     {
       id: 3,
@@ -60,7 +60,7 @@ const Catalog = () => {
       description: [
         "Analysez et extrayez automatiquement les informations clés telles que le numéro de registre de commerce, la dénomination sociale et la date d'enregistrement pour une validation rapide et précise.",
       ],
-      icon: <img src={iconlogo} alt="" />,
+      icon: <img src={iconlogo} alt="" style={{width: "15px",height: "20px",objectFit: "contain",marginRight: "0px",}}/>,
     },
     {
       id: 4,
@@ -69,10 +69,9 @@ const Catalog = () => {
       description: [
         "Identifiez instantanément les personnes physiques et morales présentes sur les listes de sanctions et PEPs pour une gestion proactive des risques.",
       ],
-      icon: <img src={iconlogo} alt="" />,
+      icon: <img src={iconlogo} alt=""style={{width: "15px",height: "20px",objectFit: "contain",marginRight: "0px",}} />,
     },
   ];
-
   return (
     <div className="main-content">
       <header className="navbar">
@@ -109,25 +108,13 @@ const Catalog = () => {
                     onClick={() => setActiveTab("apis")}
                     className={activeTab === "apis" ? "active-link" : ""}
                   >
-                    <img
-                      src={home}
-                      alt="home"
-                      style={{
-                        width: "20px",
-                        height: "20px",
-                        marginRight: "10px",
-                      }}
-                    />
+                    <img src={home} alt="home" />
                     APIs
                   </Link>
                   <Link to="/Catalog" onClick={() => setActiveTab("settings")}
                     className={activeTab === "settings" ? "active-link" : ""}
                   >
-                    <img src={settings} alt="settings" style={{
-                        width: "20px",
-                        height: "20px",
-                        marginRight: "10px",
-                      }}
+                    <img src={settings} alt="settings"
                     />
                     Paramètres
                   </Link>
@@ -182,7 +169,7 @@ const Catalog = () => {
                       style={{ cursor: "pointer" }}
                     >
                       <div className="image-container">
-                        <img src={api.image} alt={api.name} />
+                        <img id="image"src={api.image} alt={api.name} />
                         <button
                           className="see-api-button"
                           onClick={(e) => {
@@ -190,12 +177,12 @@ const Catalog = () => {
                             handleApiClick(api.name, api.image);
                           }}
                         >
-                          Voir l'API
+                          <h6 class="api-button">Voir l'API</h6>
                         </button>
                       </div>
                       <h2>
-                        <span className="api-icon"> {api.icon}</span>
-                        <span className="api-name">{api.name}</span>
+                         {api.icon}
+                        {api.name}
                       </h2>
                       <ul>
                         {api.description.map((desc, index) => (

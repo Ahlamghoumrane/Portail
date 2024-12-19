@@ -44,23 +44,23 @@ const { apiName, apiImage } = location.state || {};
         <aside className="sidebar">
         {apiName && apiImage && (
           <div className="api-info">
-          <img src={apiImage} alt={apiName} className="api-image" />
+          <img src={apiImage} alt={apiName} style={{ width: "150px", height: "80px",marginTop:"20px" }}/>
           <span className="api-name">{apiName}</span>
         </div>        
 )}
           <ul>
           <li>
           <Link to="/ApiDashboard" state={{ apiName, apiImage }} className={getLinkClass("/ApiDashboard")} >
-          <img src={Tableaudebord} alt="Tableau de bord" style={{ width: "15px", height: "15px", marginRight: "0px" }} /> Tableau de bord </Link>
+          <img src={Tableaudebord} alt="Tableau de bord" /> Tableau de bord </Link>
           </li>
           <li>
             <Link to="/Documentation" state={{ apiName, apiImage }}className={getLinkClass("/Documentation")}>
-            <img src={Documentation2} alt="Documentation" style={{ width: "15px", height: "15px", marginRight: "0px" }} />Documentation
+            <img src={Documentation2} alt="Documentation" />Documentation
             </Link>
           </li>
           <li>
             <Link to="/LiveInterface" state={{ apiName, apiImage }} className={getLinkClass("/LiveInterface")}>
-            <img src={liveinterface} alt="liveinterface" style={{ width: "10px", height: "12px", marginRight: "0px" }} />Interface en direct
+            <img src={liveinterface} alt="liveinterface"  />Interface en direct
             </Link>
           </li>
         </ul>
