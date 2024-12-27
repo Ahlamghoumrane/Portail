@@ -54,7 +54,6 @@ p{
 }
 
 .key-card {
-  display: flex;
   align-items: center;
   gap: 15px;
   background: #f1f1f1;

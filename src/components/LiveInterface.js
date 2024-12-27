@@ -25,6 +25,9 @@ const LiveInterface = () => {
     localStorage.removeItem("userEmail"); 
     navigate("/"); 
   };
+  const handleLogoClick = () => {
+    navigate("/Catalog");
+  };
    const getLinkClass = (path) => {
     return location.pathname === path ? "active-link" : "inactive-link";
   };
@@ -33,7 +36,7 @@ const LiveInterface = () => {
     <div className="dashboard-container">
       <header className="navbar">
         <div className="navbar-logo">
-          <img src={logo} alt="Logo" />
+          <img src={logo} alt="Logo"  onClick={handleLogoClick}/>
         </div>
         <div className="navbar-right">
           <span className="user-email">{userEmail}</span>

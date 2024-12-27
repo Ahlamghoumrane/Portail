@@ -6,8 +6,10 @@ import ApiDashboard from './components/ApiDashboard';
 import Documentation from './components/Documentation';
 import LiveInterface from './components/LiveInterface';
 
+
 const App = () => {
   return (
+   
     <Router>
       <Routes>
         <Route path="/" element={<Login />} />
@@ -17,6 +19,7 @@ const App = () => {
         <Route path="/LiveInterface" element={<LiveInterface />} />
       </Routes>
     </Router>
+    
   );
 };
 

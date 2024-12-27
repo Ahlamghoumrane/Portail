@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate ,Link} from "react-router-dom";
+import { useNavigate ,Link } from "react-router-dom";
 import "../styles/ApiDashboard.css";
 import logo from "../assets/Logo ID Aman (10).jpg";
 import Tableaudebord from "../assets/tableau de bord.jpg";
 import Tableaudebord1 from "../assets/tableau de bord1.jpg";
 import Documentation2 from "../assets/documentation2.jpg";
 import liveinterface from "../assets/Live interface.jpg";
-import { FaSignOutAlt ,FaKey} from "react-icons/fa";
+import { FaSignOutAlt ,FaKey,FaCopy,FaEyeSlash,FaEye} from "react-icons/fa";
 import { useLocation } from "react-router-dom";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 
@@ -14,13 +14,13 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 const ApiDashboard = () => {
   const [userEmail, setUserEmail] = useState(""); 
   const navigate = useNavigate(); 
-  const apiKeys = [
-    {
-      id: 1,
-      name: "ID AMNA - Carte d'identité",
-      createdAt: "02/05/2024 à 10h51",
-    },
-  ];
+  
+  
+
+  const handleLogoClick = () => {
+    navigate("/Catalog");
+  };
+
   const dataLastYear = [
     { name: "Janvier", traffic: 10 },
     { name: "Février", traffic: 15 },
@@ -80,16 +80,32 @@ const { apiName, apiImage } = location.state || {};
     localStorage.removeItem("userEmail"); 
     navigate("/"); 
   };
+  const apiKeys = [
+    {
+      id: 1,
+      name: "ID AMNA - Carte d'identité",
+      createdAt: "2024-05-02T10:51:00",
+      value: "1234567890abcdef", 
+    },
+  ];
   const getLinkClass = (path) => {
     return location.pathname === path ? "active-link" : "inactive-link";
   };
+  const [visibleKey, setVisibleKey] = useState(null); 
 
+  const handleToggleVisibility = (id) => {
+    setVisibleKey(visibleKey === id ? null : id); 
+  };
+
+  const handleCopy = (keyValue) => {
+    navigator.clipboard.writeText(keyValue); 
+  };
 
   return (
     <div className="dashboard-container">
       <header className="navbar">
         <div className="navbar-logo">
-          <img src={logo} alt="Logo" />
+          <img src={logo} alt="Logo" onClick={handleLogoClick} />
         </div>
         <div className="navbar-right">
           <span className="user-email">{userEmail}</span>
@@ -169,20 +185,46 @@ const { apiName, apiImage } = location.state || {};
         </ResponsiveContainer>
       </div>
     </section>
-      <section className="api-keys">
-        <h3><FaKey size={20} />Clés API</h3>
-        <p>Gérez vos clés API</p>
-        <div className="keys-list">
-          {apiKeys.map((key) => (
-            <div className="key-card" key={key.id}>
-              <div>
-                <h4>{key.name}</h4>
-                <p>Créée :  {key.createdAt}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
+    <section className="api-keys" style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
+  <h3 style={{ color: '#003348', display: 'flex', alignItems: 'center', gap: '8px' }}>
+    <FaKey size={20} />
+    Clés API
+  </h3>
+
+  <div className="keys-list" style={{ marginTop: '20px' }}>
+    {apiKeys.length > 0 ? (
+      apiKeys.map((key) => (
+        <div
+          className="key-card"
+          key={key.id}
+        >
+          
+            <h4 style={{ margin: '0', color: '#003348' }}>{userEmail}</h4> 
+            <p style={{ margin: '5px 0', color: '#666' }}>
+              Créée : {new Date(key.createdAt).toLocaleString()}
+            </p>
+            <p style={{ fontFamily: 'monospace', color: '#003348',marginTop:"40px" }}>
+              {visibleKey === key.id ? key.value : '*'.repeat(40)} 
+         
+            <button
+              onClick={() => handleToggleVisibility(key.id)}
+              style={{background: 'none',border: 'none',color: '#003348',cursor: 'pointer',fontSize: '16px',}}>
+              {visibleKey === key.id ? <FaEyeSlash /> : <FaEye />}
+            </button>
+            <button
+              onClick={() => handleCopy(key.value)}
+              style={{background: 'none',border: 'none',color: '#003348',cursor: 'pointer',fontSize: '16px',}}>
+              <FaCopy />
+            </button></p>
+          </div>
+      ))
+    ) : (
+      <p style={{ color: '#666' }}>Aucune clé API disponible.</p>
+    )}
+  </div>
+</section>
+
+
     </div>
       </div>
     </div>

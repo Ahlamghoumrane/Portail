@@ -4,12 +4,17 @@ import { useNavigate } from "react-router-dom";
 import logo from "../assets/logo.jpg";
 import "../styles/Login.css";
 
-
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -20,13 +25,43 @@ const Login = () => {
       return;
     }
 
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    if (!validateEmail(email)) {
+      setError("Adresse e-mail invalide.");
+      return;
+    }
 
-    if (error) {
-      setError("Email ou mot de passe invalide.");
-    } else {
-      localStorage.setItem("userEmail", email); 
-      navigate("/Catalog");
+    if (password.length < 6) {
+      setError("Le mot de passe doit contenir au moins 6 caractères.");
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      if (error) {
+        setError("Email ou mot de passe invalide.");
+        return;
+      }
+
+      const { user } = data;
+      if (user) {
+        const userId = user.id;
+        const organizationId = userId; // L'ID de l'utilisateur est aussi l'ID de l'organisation
+
+        // Stocker les IDs dans le localStorage
+        localStorage.setItem("user_id", userId);
+        localStorage.setItem("organization_id", organizationId);
+        navigate("/Catalog"); // Rediriger vers le composant Catalog
+      }
+    } catch (err) {
+      console.error("Erreur lors de la connexion :", err);
+      setError("Une erreur inattendue s'est produite.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -36,41 +71,39 @@ const Login = () => {
         <div className="login-container">
           <img src={logo} alt="Logo" className="logo" />
           <h1>Bienvenue sur ID AMAN</h1>
-          <p>Assurez votre conformité des maintenant</p>
+          <p>Assurez votre conformité dès maintenant</p>
           <form onSubmit={handleLogin} className="login-form">
-  <div className="input-container">
-    <input
-      type="email"
-      id="email"
-      value={email}
-      onChange={(e) => setEmail(e.target.value)}
-      required
-    />
-    <label htmlFor="email" className={email ? "active" : ""}>
-      Adresse mail
-    </label>
-  </div>
-
-  <div className="input-container">
-    <input
-      type="password"
-      id="password"
-      value={password}
-      onChange={(e) => setPassword(e.target.value)}
-      required
-    />
-    <label htmlFor="password" className={password ? "active" : ""}>
-      Mot de passe
-    </label>
-  </div>
+            <div className="input-container">
+              <input
+                type="email"
+                id="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+              <label htmlFor="email" className={email ? "active" : ""}>
+                Adresse mail
+              </label>
+            </div>
+            <div className="input-container">
+              <input
+                type="password"
+                id="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+              <label htmlFor="password" className={password ? "active" : ""}>
+                Mot de passe
+              </label>
+            </div>
             <button
               type="submit"
               className="login-button"
-              disabled={!email || !password}
+              disabled={!email || !password || isLoading}
             >
-              Se connecter
+              {isLoading ? "Connexion..." : "Se connecter"}
             </button>
-
             {error && <p className="error-message">{error}</p>}
           </form>
         </div>
