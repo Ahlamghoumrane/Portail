@@ -22,17 +22,17 @@ const Catalog = () => {
   const [activeInnerTab, setActiveInnerTab] = useState("profil");
   const [isLoading, setIsLoading] = useState(true);
   const [formData, setFormData] = useState({
-    Prénom: '',
-    Nom: '',
-    email: '',
-    tel: '',
-    entreprise: '',
-    Activité: '',
-    Adresse: '',
-    Alerte: '',
-    identification: '',
-    type: '',
-    Facturation: '',
+    Prénom: 'Non renseigné',
+    Nom: 'Non renseigné',
+    email: 'Non renseigné',
+    tel: 'Non renseigné',
+    entreprise: 'Non renseigné',
+    Activité: 'Non renseigné',
+    Adresse: 'Non renseigné',
+    Alerte: 'Non renseigné',
+    identification: 'Non renseigné',
+    type: 'Non renseigné',
+    Facturation: 'Non renseigné',
   });
 
   const navigate = useNavigate();
@@ -45,12 +45,14 @@ const Catalog = () => {
   useEffect(() => {
     const fetchOrganizationData = async () => {
       try {
-        const response = await axios.get('/api/organization_metadata', {
-          params: { organization_id: 'ff46fac6-f7aa-47fb-875c-f3e26fc0f2d7' },
-          headers: {
-            accept: 'application/json',
-            Authorization: 'Bearer 973b404d-f549-42de-bb17-95211c1bdf0a',
-          },
+        const response = await axios.get(
+          'https://api-metadata-services-580423739496.europe-west9.run.app/api/organization_metadata?organization_id=ff46fac6-f7aa-47fb-875c-f3e26fc0f2d7',
+          {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer 973b404d-f549-42de-bb17-95211c1bdf0a`
+            }
           }
         );
         console.log('Statut HTTP:', response.status);  
