@@ -50,12 +50,11 @@ const Login = () => {
       const { user } = data;
       if (user) {
         const userId = user.id;
-        const organizationId = userId; // L'ID de l'utilisateur est aussi l'ID de l'organisation
-
-        // Stocker les IDs dans le localStorage
+        const organizationId = userId; 
         localStorage.setItem("user_id", userId);
         localStorage.setItem("organization_id", organizationId);
-        navigate("/Catalog"); // Rediriger vers le composant Catalog
+        localStorage.setItem("userEmail", email);
+        navigate("/Catalog"); 
       }
     } catch (err) {
       console.error("Erreur lors de la connexion :", err);

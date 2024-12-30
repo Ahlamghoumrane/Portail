@@ -2,6 +2,7 @@
   "name": "portail",
   "version": "0.1.0",
   "private": true,
+  "proxy": "https://api-metadata-services-580423739496.europe-west9.run.app/api/organization_metadata?organization_id=ff46fac6-f7aa-47fb-875c-f3e26fc0f2d7", 
   "dependencies": {
     "@google-cloud/bigquery": "^7.9.1",
     "@supabase/auth-ui-react": "^0.4.7",
