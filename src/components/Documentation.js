@@ -13,7 +13,7 @@ const Documentation = () => {
   const [userEmail, setUserEmail] = useState(""); 
   const navigate = useNavigate(); 
   const location = useLocation();
-const { apiName, apiImage } = location.state || {};
+const { apiServiceCode, apiImage } = location.state || {};
   
   useEffect(() => {
     const email = localStorage.getItem("userEmail");
@@ -45,24 +45,24 @@ const { apiName, apiImage } = location.state || {};
       </header>
       <div className="dashboard-layout">
         <aside className="sidebar">
-        {apiName && apiImage && (
+        { apiServiceCode && apiImage && (
           <div className="api-info">
-          <img src={apiImage} alt={apiName} style={{ width: "150px", height: "80px",marginTop:"20px" }}/>
-          <span className="api-name">{apiName}</span>
+          <img src={apiImage} alt={ apiServiceCode} style={{ width: "150px", height: "80px",marginTop:"20px" }}/>
+          <span className="api-name">{ apiServiceCode}</span>
         </div>        
 )}
           <ul>
           <li>
-          <Link to="/ApiDashboard" state={{ apiName, apiImage }} className={getLinkClass("/ApiDashboard")} >
+          <Link to="/ApiDashboard" state={{  apiServiceCode, apiImage }} className={getLinkClass("/ApiDashboard")} >
           <img src={Tableaudebord} alt="Tableau de bord" /> Tableau de bord </Link>
           </li>
           <li>
-            <Link to="/Documentation" state={{ apiName, apiImage }}className={getLinkClass("/Documentation")}>
+            <Link to="/Documentation" state={{  apiServiceCode, apiImage }}className={getLinkClass("/Documentation")}>
             <img src={Documentation2} alt="Documentation" />Documentation
             </Link>
           </li>
           <li>
-            <Link to="/LiveInterface" state={{ apiName, apiImage }} className={getLinkClass("/LiveInterface")}>
+            <Link to="/LiveInterface" state={{  apiServiceCode, apiImage }} className={getLinkClass("/LiveInterface")}>
             <img src={liveinterface} alt="liveinterface"  />Interface en direct
             </Link>
           </li>
@@ -71,6 +71,7 @@ const { apiName, apiImage } = location.state || {};
         <main className="main-content">
           <h1><img src={Documentation1} alt="Documentation" style={{ width: "25px", height: "25px", marginRight: "10px" }} />Documentation de l'API</h1>
           <p> Comment utiliser votre API dans votre environnement</p>
+          
         </main>
       </div>
     </div>

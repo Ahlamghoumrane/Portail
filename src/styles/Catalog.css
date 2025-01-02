@@ -244,6 +244,19 @@ h1{
 .api-card ul li {
   margin-bottom: 0px;
 }
+.documentation-link {
+  display: block;
+  margin-top: 10px;
+  text-align: center;
+  color: #003348;
+  text-decoration: none;
+
+}
+
+.documentation-link:hover {
+  text-decoration:solid;
+}
+
 
 @media (max-width: 768px) {
   .catalog-container {

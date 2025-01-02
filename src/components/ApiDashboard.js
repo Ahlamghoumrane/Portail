@@ -14,12 +14,69 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 const ApiDashboard = () => {
   const [userEmail, setUserEmail] = useState(""); 
   const navigate = useNavigate(); 
-  
-  
-
   const handleLogoClick = () => {
     navigate("/Catalog");
   };
+  const [serviceCode, setServiceCode] = useState(''); 
+  const [tokenData, setTokenData] = useState(null);
+  
+  useEffect(() => {
+    const fetchServiceToken = async () => {
+     
+
+      try {
+        const API_URL = `https://api-metadata-services-580423739496.europe-west9.run.app/api/service_metadata?service_code=${serviceCode}`;
+        const AUTH_TOKEN = '973b404d-f549-42de-bb17-95211c1bdf0a';
+
+        const response = await fetch(API_URL, {
+          method: 'GET',
+          headers: {
+            'Accept': 'application/json',
+            'Authorization': `Bearer ${AUTH_TOKEN}`,
+          },
+        });
+
+        if (response.ok) {
+          const serviceData = await response.json();
+          console.log('API Response for service metadata:', serviceData);
+
+         
+          const serviceId = serviceData; 
+          const ORGANIZATION_ID = 'ff46fac6-f7aa-47fb-875c-f3e26fc0f2d7';
+          const TOKEN_URL = `https://api-metadata-services-580423739496.europe-west9.run.app/api/orga_service_token?organization_id=${ORGANIZATION_ID}&service_id=${serviceId}`;
+
+          const tokenResponse = await fetch(TOKEN_URL, {
+            method: 'GET',
+            headers: {
+              'Accept': 'application/json',
+              'Authorization': `Bearer ${AUTH_TOKEN}`,
+            },
+          });
+
+          if (tokenResponse.ok) {
+            const tokenData = await tokenResponse.json();
+            console.log('API Response for service token:', tokenData);
+            setTokenData(tokenData);
+          } else {
+           
+            console.error('Error fetching token:', tokenResponse.statusText);
+          }
+        } else {
+         
+          console.error('Error fetching metadata:', response.statusText);
+        }
+      } catch (err) {
+       
+        console.error('Fetch error:', err);
+      } finally {
+      
+      }
+    };
+    if (serviceCode) {
+      fetchServiceToken();
+    }
+
+  }, [serviceCode]);
 
   const dataLastYear = [
     { name: "Janvier", traffic: 10 },
@@ -53,11 +110,12 @@ const ApiDashboard = () => {
   ];
   
 
-    const [selectedFilter, setSelectedFilter] = useState("Last Year");
+    const [selectedType, setSelectedType] = useState("Succée");
+    const [selectedPeriod, setSelectedPeriod] = useState("daily_last_30");
   
     
     const getData = () => {
-      switch (selectedFilter) {
+      switch (selectedPeriod) {
         case "Last Year":
           return dataLastYear;
         case "Last Quarter":
@@ -70,7 +128,12 @@ const ApiDashboard = () => {
     };
   
   const location = useLocation();
-const { apiName, apiImage } = location.state || {};
+const { apiServiceCode, apiImage } = location.state || {};
+useEffect(() => {
+  if (apiServiceCode) {
+    setServiceCode(apiServiceCode);
+  }
+}, [apiServiceCode]);
   
   useEffect(() => {
     const email = localStorage.getItem("userEmail");
@@ -80,14 +143,7 @@ const { apiName, apiImage } = location.state || {};
     localStorage.removeItem("userEmail"); 
     navigate("/"); 
   };
-  const apiKeys = [
-    {
-      id: 1,
-      name: "ID AMNA - Carte d'identité",
-      createdAt: "2024-05-02T10:51:00",
-      value: "1234567890abcdef", 
-    },
-  ];
+ 
   const getLinkClass = (path) => {
     return location.pathname === path ? "active-link" : "inactive-link";
   };
@@ -116,24 +172,24 @@ const { apiName, apiImage } = location.state || {};
       </header>
       <div className="dashboard-layout">
         <aside className="sidebar">
-        {apiName && apiImage && (
+        {apiServiceCode && apiImage && (
   <div className="api-info">
-    <img src={apiImage} alt={apiName} style={{ width: "150px", height: "80px",marginTop:"20px" }} />
-    <span className="api-name"s>{apiName}</span>  
+    <img src={apiImage} alt={apiServiceCode} style={{ width: "150px", height: "80px",marginTop:"20px" }} />
+    <span className="api-name"s>{apiServiceCode}</span>  
   </div>
 )}    
        <ul>
           <li>
-          <Link to="/ApiDashboard" state={{ apiName, apiImage }} className={getLinkClass("/ApiDashboard")}>
+          <Link to="/ApiDashboard" state={{ apiServiceCode, apiImage }} className={getLinkClass("/ApiDashboard")}>
           <img src={Tableaudebord} alt="Tableau de bord" /> Tableau de bord </Link>
           </li>
           <li>
-            <Link to="/Documentation" state={{ apiName, apiImage }}className={getLinkClass("/Documentation")}>
+            <Link to="/Documentation" state={{ apiServiceCode, apiImage }}className={getLinkClass("/Documentation")}>
             <img src={Documentation2} alt="Documentation"  />Documentation
             </Link>
           </li>
           <li>
-            <Link to="/LiveInterface" state={{ apiName, apiImage }}className={getLinkClass("/LiveInterface")}>
+            <Link to="/LiveInterface" state={{ apiServiceCode, apiImage }}className={getLinkClass("/LiveInterface")}>
             <img src={liveinterface} alt="liveinterface" />Interface en direct
             </Link>
           </li>
@@ -144,86 +200,98 @@ const { apiName, apiImage } = location.state || {};
         <h1><img src={Tableaudebord1} alt="Tableau de bord" style={{ width: "25px", height: "25px", marginRight: "6px" }} /> Tableau de bord</h1>
         <p>Gérer l'utilisation et l'abonnement</p>
       </header>
-        <section className="api-usage">
-        <h3>Utilisation de l'API</h3>
-        <div className="usage-info">
-          <p><strong>25 pages gratuites restantes</strong></p>
-          <p>Vos 25 pages gratuites mensuelles seront renouvelées le 2 décembre 2024.</p>
-        </div>
-      </section>
-      <section className="api-metrics">
-      <h3>Métriques de l'API</h3>
-      <div className="metrics-filter">
-        <button
-          className={selectedFilter === "Last Year" ? "active-filter" : ""}
-          onClick={() => setSelectedFilter("Last Year")}
+      <section className="api-keys" style={{ padding: "20px", fontFamily: "Arial, sans-serif" }}>
+            <h3 style={{ color: "#003348", display: "flex", alignItems: "center", gap: "8px" }}>
+              <FaKey size={20} />
+              Clés API
+            </h3>
+            <div>
+           
+            </div>
+            <div className="keys-list" style={{ marginTop: "20px" }}>
+              {tokenData ? (
+                <div className="key-card" style={{ marginBottom: "20px" }}>
+                  <p style={{ fontFamily: "monospace", color: "#003348", marginTop: "40px",}}>
+                    {visibleKey === 0 ? (
+                      <pre>{JSON.stringify(tokenData, null, 2)}</pre>
+                    ) : (
+                      <span>************************************</span>
+                    )}
+                    
+                      <button className="toggle-key-button" onClick={() => handleToggleVisibility(0)}
+                         style={{background: 'none',border: 'none',color: '#003348',cursor: 'pointer',fontSize: '16px',marginLeft:"20px"}}>
+                        {visibleKey === 0 ?  <FaEye /> :<FaEyeSlash />}
+                      </button>
+                      <button className="copy-key-button" onClick={() => handleCopy(JSON.stringify(tokenData))}
+                         style={{background: 'none',border: 'none',color: '#003348',cursor: 'pointer',fontSize: '16px',marginLeft:"20px"}}>
+                        <FaCopy />
+                      </button>
+                    
+                  </p>
+                </div>
+              ) : (
+                <p>Chargement des données...</p>
+              )}
+            </div>
+          </section>
+          <section className="api-metrics">
+  <h3>Métriques de l'API</h3>
+  <div className="metrics-filter">
+  <div className="metrics-header" style={{ display: "flex", alignItems: "center", gap: "20px" }}>
+        <select
+          value={selectedType}
+          onChange={(e) => setSelectedType(e.target.value)}
+          style={{
+            border: "none",
+            background: "transparent",
+            fontSize: "16px",
+            color: "#003348",
+            cursor: "pointer",
+            outline: "none",
+            margin: 0,
+          }}
         >
-          L'année dernière
-        </button>
-        <button
-          className={selectedFilter === "Last Quarter" ? "active-filter" : ""}
-          onClick={() => setSelectedFilter("Last Quarter")}
-        >
-         Le dernier trimestre
-        </button>
-        <button
-          className={selectedFilter === "Last Day" ? "active-filter" : ""}
-          onClick={() => setSelectedFilter("Last Day")}
-        >
-          Le dernier jour
-        </button>
-      </div>
-      <div className="metrics-chart">
-        <ResponsiveContainer width="100%" height={300}>
-          <LineChart data={getData()}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" />
-            <YAxis />
-            <Tooltip />
-            <Line type="monotone" dataKey="traffic" stroke="#003348" activeDot={{ r: 8 }} />
-          </LineChart>
-        </ResponsiveContainer>
-      </div>
-    </section>
-    <section className="api-keys" style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
-  <h3 style={{ color: '#003348', display: 'flex', alignItems: 'center', gap: '8px' }}>
-    <FaKey size={20} />
-    Clés API
-  </h3>
-
-  <div className="keys-list" style={{ marginTop: '20px' }}>
-    {apiKeys.length > 0 ? (
-      apiKeys.map((key) => (
-        <div
-          className="key-card"
-          key={key.id}
-        >
-          
-            <h4 style={{ margin: '0', color: '#003348' }}>{userEmail}</h4> 
-            <p style={{ margin: '5px 0', color: '#666' }}>
-              Créée : {new Date(key.createdAt).toLocaleString()}
-            </p>
-            <p style={{ fontFamily: 'monospace', color: '#003348',marginTop:"40px" }}>
-              {visibleKey === key.id ? key.value : '*'.repeat(40)} 
-         
+          <option value="Success">Success</option>
+          <option value="Errors">Errors</option>
+        </select>
+        <div style={{ display: "flex", gap: "20px" }}>
+          {["daily_last_30", "daily_last_month", "monthly_last_year"].map((period) => (
             <button
-              onClick={() => handleToggleVisibility(key.id)}
-              style={{background: 'none',border: 'none',color: '#003348',cursor: 'pointer',fontSize: '16px',}}>
-              {visibleKey === key.id ? <FaEyeSlash /> : <FaEye />}
+              key={period}
+              onClick={() => setSelectedPeriod(period)}
+              style={{
+                border: "none",
+                background: "transparent",
+                fontSize: "16px",
+                color: selectedPeriod === period ? "#000" : "#003348",
+                fontWeight: selectedPeriod === period ? "bold" : "normal",
+                textDecoration: selectedPeriod === period ? "underline" : "none",
+                cursor: "pointer",
+              }}
+            >
+              {period}
             </button>
-            <button
-              onClick={() => handleCopy(key.value)}
-              style={{background: 'none',border: 'none',color: '#003348',cursor: 'pointer',fontSize: '16px',}}>
-              <FaCopy />
-            </button></p>
-          </div>
-      ))
-    ) : (
-      <p style={{ color: '#666' }}>Aucune clé API disponible.</p>
-    )}
+          ))}
+        </div>
+        </div>
+  </div>
+  <div className="metrics-chart">
+    <ResponsiveContainer width="100%" height={300}>
+      <LineChart data={getData()}>
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis dataKey="name" />
+        <YAxis />
+        <Tooltip />
+        <Line
+          type="monotone"
+          dataKey="traffic"
+          stroke="#003348"
+          activeDot={{ r: 8 }}
+        />
+      </LineChart>
+    </ResponsiveContainer>
   </div>
 </section>
-
 
     </div>
       </div>

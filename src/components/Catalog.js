@@ -20,7 +20,6 @@ const Catalog = () => {
   const [userEmail, setUserEmail] = useState("");
   const [activeTab, setActiveTab] = useState("apis");
   const [activeInnerTab, setActiveInnerTab] = useState("profil");
-  const [isLoading, setIsLoading] = useState(true);
   const [formData, setFormData] = useState({
     Prénom: 'Non renseigné',
     Nom: 'Non renseigné',
@@ -68,17 +67,16 @@ const Catalog = () => {
             Adresse: response.data.orga_address || 'Non renseigné',
             Alerte: response.data.orga_alert_email || 'Non renseigné',
             identification: response.data.orga_register_num || 'Non renseigné',
-            type: response.data.status !== undefined ? (response.data.status ? 'Active' : 'Inactive') : 'Non renseigné',
+            type: response.data.orga_type  || 'Non renseigné',
             Facturation: response.data.orga_invoice_email || 'Non renseigné',
           });
         } else {
           console.error('Erreur dans la réponse de l\'API:', response.status);
         }
   
-        setIsLoading(false);  
       } catch (err) {
         console.error('Erreur lors de la récupération des données:', err);  
-        setIsLoading(false);
+     
       }
     };
   
@@ -110,13 +108,15 @@ const Catalog = () => {
     navigate("/");
   };
 
-  const handleApiClick = (apiName, apiImage) => {
-    navigate("/ApiDashboard", { state: { apiName, apiImage } });
+  const handleApiClick = (apiServiceCode, apiImage) => {
+    navigate("/ApiDashboard", { state: { apiServiceCode, apiImage } });
   };
+  
 
   const apis = [
     {
       id: 1,
+      serviceCode: "LIVENESS",
       name: "Visage & ID Matching",
       image: Facematching,
       description: [
@@ -129,9 +129,12 @@ const Catalog = () => {
           style={{ width: "15px", height: "20px", objectFit: "contain" }}
         />
       ),
+      documentationLink: "https://api-liveness-check-580423739496.europe-west9.run.app/redoc",
+     
     },
     {
       id: 2,
+      serviceCode: "POA",
       name: "Justificatif de domicile",
       image: Justificatifdedomicile,
       description: [
@@ -144,9 +147,12 @@ const Catalog = () => {
           style={{ width: "15px", height: "20px", objectFit: "contain" }}
         />
       ),
+      documentationLink: "https://api-proof-of-address-580423739496.europe-west9.run.app/redoc",
+ 
     },
     {
       id: 3,
+      serviceCode: "DOC-BUSINESS",
       name: "Document d’entreprise",
       image: Document,
       description: [
@@ -159,9 +165,12 @@ const Catalog = () => {
           style={{ width: "15px", height: "20px", objectFit: "contain" }}
         />
       ),
+      documentationLink: "https://api-business-document-analysis-580423739496.europe-west9.run.app/redoc",
+      
     },
     {
       id: 4,
+      serviceCode: "PEP-SANCTION",
       name: "PPE & Sanction Screening",
       image: sanction,
       description: [
@@ -174,12 +183,9 @@ const Catalog = () => {
           style={{ width: "15px", height: "20px", objectFit: "contain" }}
         />
       ),
+      documentationLink: "https://api-pep-sanction-screening-580423739496.europe-west9.run.app/redoc",
     },
   ];
-
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
 
   return (
     <div className="main-content">
@@ -263,7 +269,7 @@ const Catalog = () => {
                     <div
                       key={api.id}
                       className="api-card"
-                      onClick={() => handleApiClick(api.name, api.image)}
+                      onClick={() => handleApiClick(api.serviceCode, api.image)}
                       style={{ cursor: "pointer" }}
                     >
                       <div className="image-container">
@@ -272,12 +278,13 @@ const Catalog = () => {
                           className="see-api-button"
                           onClick={(e) => {
                             e.stopPropagation();
-                            handleApiClick(api.name, api.image);
+                            handleApiClick(api.serviceCode, api.image);
                           }}
                         >
                           <h6 className="api-button">Voir l'API</h6>
                         </button>
                       </div>
+                      <a href={api.documentationLink} target="_blank" rel="noopener noreferrer" className="documentation-link">Voir la documentation</a>    
                       <h2>
                         {api.icon}
                         {api.name}
@@ -286,7 +293,7 @@ const Catalog = () => {
                         {api.description.map((desc, index) => (
                           <li key={index}>{desc}</li>
                         ))}
-                      </ul>
+                      </ul>    
                     </div>
                   ))}
                 </div>
