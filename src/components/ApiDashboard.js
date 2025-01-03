@@ -155,12 +155,13 @@ const ApiDashboard = () => {
       if (!metricsData.data || !metricsData.data[selectedType]) return null;
   
       const data = metricsData.data[selectedType][selectedPeriod];
+      const sortedData = data.sort((a, b) => new Date(a.date) - new Date(b.date));
       return {
-        labels: data.map((item) => item.date),
+        labels: sortedData.map((item) => item.date),
         datasets: [
           {
             label: `${selectedType} (${selectedPeriod})`,
-            data: data.map((item) => item.count),
+            data: sortedData.map((item) => item.count),
             borderColor: selectedType === "Succée" ? "green" : "red",
             backgroundColor:
               selectedType === "Succée"
@@ -260,7 +261,7 @@ useEffect(() => {
                 <div className="key-card" style={{ marginBottom: "40px" }}>
                   <p style={{  display: "flex",  alignItems: "center",fontFamily: "monospace", color: "#003348", marginTop: "20px", gap: "5px", }}>
                     {visibleKey === 0 ? (
-                      <pre style={{ margin: 0, whiteSpace: "nowrap"}}>{JSON.stringify(tokenData, null, 2)}</pre>
+                      <pre style={{ margin: 0, whiteSpace: "nowrap"}}>{tokenData}</pre>
                     ) : (
                       <span >************************************</span>
                     )}
@@ -269,7 +270,7 @@ useEffect(() => {
                          style={{background: 'none',border: 'none',color: '#003348',cursor: 'pointer',fontSize: '16px'}}>
                         {visibleKey === 0 ?  <FaEye /> :<FaEyeSlash />}
                       </button>
-                      <button className="copy-key-button" onClick={() => handleCopy(JSON.stringify(tokenData))}
+                      <button className="copy-key-button" onClick={() => handleCopy(tokenData)}
                          style={{background: 'none',border: 'none',color: '#003348',cursor: 'pointer',fontSize: '16px'}}>
                         <FaCopy />
                       </button>
@@ -319,7 +320,7 @@ useEffect(() => {
       {{
         daily_last_30: "Derniers 30 jours",
         daily_last_month: "Mois dernier",
-        monthly_last_year: "Année dernière (par mois)",
+        monthly_last_year: "Année dernière ",
       }[period]}
     </button>
    ))}
