@@ -13,7 +13,7 @@ const LiveInterface = () => {
   const [userEmail, setUserEmail] = useState(""); 
   const navigate = useNavigate(); 
   const location = useLocation();
-  const { apiServiceCode , apiImage } = location.state || {};
+  const { apiServiceCode , apiImage, apidocumentationLink } = location.state || {};
   const [activeTab, setActiveTab] = useState("extracted");
 
   
@@ -59,7 +59,7 @@ const LiveInterface = () => {
           <img src={Tableaudebord} alt="Tableau de bord"  /> Tableau de bord </Link>
           </li>
           <li>
-            <Link to="/Documentation" state={{  apiServiceCode, apiImage }}className={getLinkClass("/Documentation")}>
+            <Link to="/Documentation" state={{  apiServiceCode, apiImage, apidocumentationLink }}className={getLinkClass("/Documentation")}>
             <img src={Documentation2} alt="Documentation"  />Documentation
             </Link>
           </li>

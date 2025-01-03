@@ -108,8 +108,8 @@ const Catalog = () => {
     navigate("/");
   };
 
-  const handleApiClick = (apiServiceCode, apiImage) => {
-    navigate("/ApiDashboard", { state: { apiServiceCode, apiImage } });
+  const handleApiClick = (apiServiceCode, apiImage,apidocumentationLink) => {
+    navigate("/ApiDashboard", { state: { apiServiceCode, apiImage,apidocumentationLink} });
   };
   
 
@@ -269,7 +269,7 @@ const Catalog = () => {
                     <div
                       key={api.id}
                       className="api-card"
-                      onClick={() => handleApiClick(api.serviceCode, api.image)}
+                      onClick={() => handleApiClick(api.serviceCode, api.image,api.documentationLink)}
                       style={{ cursor: "pointer" }}
                     >
                       <div className="image-container">
@@ -278,13 +278,12 @@ const Catalog = () => {
                           className="see-api-button"
                           onClick={(e) => {
                             e.stopPropagation();
-                            handleApiClick(api.serviceCode, api.image);
+                            handleApiClick(api.serviceCode, api.image,api.documentationLink);
                           }}
                         >
                           <h6 className="api-button">Voir l'API</h6>
                         </button>
                       </div>
-                      <a href={api.documentationLink} target="_blank" rel="noopener noreferrer" className="documentation-link">Voir la documentation</a>    
                       <h2>
                         {api.icon}
                         {api.name}

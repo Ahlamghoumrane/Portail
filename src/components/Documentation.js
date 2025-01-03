@@ -13,7 +13,8 @@ const Documentation = () => {
   const [userEmail, setUserEmail] = useState(""); 
   const navigate = useNavigate(); 
   const location = useLocation();
-const { apiServiceCode, apiImage } = location.state || {};
+const { apiServiceCode, apiImage, apidocumentationLink } = location.state || {};
+const [isLoading, setIsLoading] = useState(true);
   
   useEffect(() => {
     const email = localStorage.getItem("userEmail");
@@ -57,7 +58,7 @@ const { apiServiceCode, apiImage } = location.state || {};
           <img src={Tableaudebord} alt="Tableau de bord" /> Tableau de bord </Link>
           </li>
           <li>
-            <Link to="/Documentation" state={{  apiServiceCode, apiImage }}className={getLinkClass("/Documentation")}>
+            <Link to="/Documentation" state={{  apiServiceCode, apiImage , apidocumentationLink}}className={getLinkClass("/Documentation")}>
             <img src={Documentation2} alt="Documentation" />Documentation
             </Link>
           </li>
@@ -71,7 +72,34 @@ const { apiServiceCode, apiImage } = location.state || {};
         <main className="main-content">
           <h1><img src={Documentation1} alt="Documentation" style={{ width: "25px", height: "25px", marginRight: "10px" }} />Documentation de l'API</h1>
           <p> Comment utiliser votre API dans votre environnement</p>
-          
+          {apidocumentationLink && (
+             <div style={{ position: "relative" }}>
+             {isLoading && (
+               <div
+                 style={{
+                   position: "absolute",
+                   top: "50%",
+                   left: "50%",
+                   transform: "translate(-50%, -50%)",
+                   fontSize: "18px",
+                   color: "#555",
+                 }}
+               >
+                 Chargement de la documentation...
+               </div>
+             )}
+            <iframe
+              src={apidocumentationLink}
+              title={`Documentation ${apiServiceCode}`}
+              style={{
+                width: "100%",
+                height: "80vh",
+                border: "none",
+              }}
+              onLoad={() => setIsLoading(false)}
+            />
+         </div>
+      )}
         </main>
       </div>
     </div>

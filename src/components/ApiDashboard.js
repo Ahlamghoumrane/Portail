@@ -8,10 +8,22 @@ import Documentation2 from "../assets/documentation2.jpg";
 import liveinterface from "../assets/Live interface.jpg";
 import { FaSignOutAlt ,FaKey,FaCopy,FaEyeSlash,FaEye} from "react-icons/fa";
 import { useLocation } from "react-router-dom";
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
+import { Line } from "react-chartjs-2";
+import {Chart as ChartJS,CategoryScale,LinearScale,PointElement,LineElement,Title,Tooltip,Legend,} from "chart.js";
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 
 const ApiDashboard = () => {
+  const [metricsData, setMetricsData] = useState({});
+  const [error, setError] = useState(null);
   const [userEmail, setUserEmail] = useState(""); 
   const navigate = useNavigate(); 
   const handleLogoClick = () => {
@@ -19,6 +31,7 @@ const ApiDashboard = () => {
   };
   const [serviceCode, setServiceCode] = useState(''); 
   const [tokenData, setTokenData] = useState(null);
+  
   
   useEffect(() => {
     const fetchServiceToken = async () => {
@@ -56,6 +69,7 @@ const ApiDashboard = () => {
           if (tokenResponse.ok) {
             const tokenData = await tokenResponse.json();
             console.log('API Response for service token:', tokenData);
+            //const cleanedData = tokenData.replace(/^"(.+)"$/, '$1');
             setTokenData(tokenData);
           } else {
            
@@ -77,58 +91,88 @@ const ApiDashboard = () => {
     }
 
   }, [serviceCode]);
-
-  const dataLastYear = [
-    { name: "Janvier", traffic: 10 },
-    { name: "Février", traffic: 15 },
-    { name: "Mars", traffic: 20 },
-    { name: "Avril", traffic: 25 },
-    { name: "Mai", traffic: 10 },
-    { name: "Juin", traffic: 5 },
-    { name: "Juillet", traffic: 30 },
-    { name: "Août", traffic: 40 },
-    { name: "Septembre", traffic: 35 },
-    { name: "Octobre", traffic: 20 },
-    { name: "Novembre", traffic: 15 },
-    { name: "Décembre", traffic: 10 },
-  ];
-  
-  const dataLastQuarter = [
-    { name: "Semaine 1", traffic: 15 },
-    { name: "Semaine 2", traffic: 20 },
-    { name: "Semaine 3", traffic: 25 },
-    { name: "Semaine 4", traffic: 30 },
-    { name: "Semaine 5", traffic: 10 },
-  ];
-  
-  const dataLastDay = [
-    { name: "00:00", traffic: 5 },
-    { name: "06:00", traffic: 15 },
-    { name: "12:00", traffic: 10 },
-    { name: "18:00", traffic: 20 },
-    { name: "23:59", traffic: 8 },
-  ];
-  
-
     const [selectedType, setSelectedType] = useState("Succée");
     const [selectedPeriod, setSelectedPeriod] = useState("daily_last_30");
-  
+   
+    useEffect(() => {
+      const fetchApiMetrics = async () => {
+        try {
+          const AUTH_TOKEN = '973b404d-f549-42de-bb17-95211c1bdf0a';
     
-    const getData = () => {
-      switch (selectedPeriod) {
-        case "Last Year":
-          return dataLastYear;
-        case "Last Quarter":
-          return dataLastQuarter;
-        case "Last Day":
-          return dataLastDay;
-        default:
-          return dataLastYear;
+          console.log("Service Code utilisé :", serviceCode);
+    
+          const SERVICE_METADATA_URL = `https://api-metadata-services-580423739496.europe-west9.run.app/api/service_metadata?service_code=${serviceCode}`;
+          const metadataResponse = await fetch(SERVICE_METADATA_URL, {
+            method: 'GET',
+            headers: {
+              'Accept': 'application/json',
+              'Authorization': `Bearer ${AUTH_TOKEN}`,
+            },
+          });
+    
+          if (!metadataResponse.ok) {
+            throw new Error(`Erreur Service Metadata : ${metadataResponse.statusText}`);
+          }
+    
+          const serviceId = await metadataResponse.json();
+          console.log("Service ID récupéré :", serviceId);
+          const API_METRICS_URL = `https://api-metadata-services-580423739496.europe-west9.run.app/api/get_calls_statistics`;
+          const params = new URLSearchParams({
+            organization_id: "8067a437-22b9-49c7-9e84-129fff27a24b",
+            service_id: serviceId,
+          });
+    
+          console.log("URL des métriques :", `${API_METRICS_URL}?${params.toString()}`);
+    
+          const metricsResponse = await fetch(`${API_METRICS_URL}?${params.toString()}`, {
+            method: 'GET',
+            headers: {
+              'Accept': 'application/json',
+              'Authorization': `Bearer ${AUTH_TOKEN}`,
+            },
+          });
+    
+          if (!metricsResponse.ok) {
+            throw new Error(`Erreur Metrics : ${metricsResponse.statusText}`);
+          }
+    
+          const metricsData = await metricsResponse.json();
+          console.log("Métriques récupérées :", metricsData);
+    
+          setMetricsData(metricsData);
+        } catch (err) {
+          setError(`Erreur : ${err.message}`);
+          console.error("Erreur détectée :", err);
+        }
+      };
+    
+      if (serviceCode) {
+        fetchApiMetrics();
       }
+    }, [serviceCode]);
+    
+    const prepareChartData = () => {
+      if (!metricsData.data || !metricsData.data[selectedType]) return null;
+  
+      const data = metricsData.data[selectedType][selectedPeriod];
+      return {
+        labels: data.map((item) => item.date),
+        datasets: [
+          {
+            label: `${selectedType} (${selectedPeriod})`,
+            data: data.map((item) => item.count),
+            borderColor: selectedType === "Succée" ? "green" : "red",
+            backgroundColor:
+              selectedType === "Succée"
+                ? "rgba(0, 255, 0, 0.3)"
+                : "rgba(255, 0, 0, 0.3)",
+          },
+        ],
+      };
     };
   
   const location = useLocation();
-const { apiServiceCode, apiImage } = location.state || {};
+const { apiServiceCode, apiImage,apidocumentationLink } = location.state || {};
 useEffect(() => {
   if (apiServiceCode) {
     setServiceCode(apiServiceCode);
@@ -156,7 +200,10 @@ useEffect(() => {
   const handleCopy = (keyValue) => {
     navigator.clipboard.writeText(keyValue); 
   };
-
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+ 
   return (
     <div className="dashboard-container">
       <header className="navbar">
@@ -184,7 +231,7 @@ useEffect(() => {
           <img src={Tableaudebord} alt="Tableau de bord" /> Tableau de bord </Link>
           </li>
           <li>
-            <Link to="/Documentation" state={{ apiServiceCode, apiImage }}className={getLinkClass("/Documentation")}>
+            <Link to="/Documentation" state={{ apiServiceCode, apiImage ,apidocumentationLink}} className={getLinkClass("/Documentation")}>
             <img src={Documentation2} alt="Documentation"  />Documentation
             </Link>
           </li>
@@ -208,26 +255,26 @@ useEffect(() => {
             <div>
            
             </div>
-            <div className="keys-list" style={{ marginTop: "20px" }}>
+            <div className="keys-list" style={{  }}>
               {tokenData ? (
-                <div className="key-card" style={{ marginBottom: "20px" }}>
-                  <p style={{ fontFamily: "monospace", color: "#003348", marginTop: "40px",}}>
+                <div className="key-card" style={{ marginBottom: "40px" }}>
+                  <p style={{  display: "flex",  alignItems: "center",fontFamily: "monospace", color: "#003348", marginTop: "20px", gap: "5px", }}>
                     {visibleKey === 0 ? (
-                      <pre>{JSON.stringify(tokenData, null, 2)}</pre>
+                      <pre style={{ margin: 0, whiteSpace: "nowrap"}}>{JSON.stringify(tokenData, null, 2)}</pre>
                     ) : (
-                      <span>************************************</span>
+                      <span >************************************</span>
                     )}
                     
                       <button className="toggle-key-button" onClick={() => handleToggleVisibility(0)}
-                         style={{background: 'none',border: 'none',color: '#003348',cursor: 'pointer',fontSize: '16px',marginLeft:"20px"}}>
+                         style={{background: 'none',border: 'none',color: '#003348',cursor: 'pointer',fontSize: '16px'}}>
                         {visibleKey === 0 ?  <FaEye /> :<FaEyeSlash />}
                       </button>
                       <button className="copy-key-button" onClick={() => handleCopy(JSON.stringify(tokenData))}
-                         style={{background: 'none',border: 'none',color: '#003348',cursor: 'pointer',fontSize: '16px',marginLeft:"20px"}}>
+                         style={{background: 'none',border: 'none',color: '#003348',cursor: 'pointer',fontSize: '16px'}}>
                         <FaCopy />
                       </button>
-                    
-                  </p>
+                      </p>
+                
                 </div>
               ) : (
                 <p>Chargement des données...</p>
@@ -235,63 +282,58 @@ useEffect(() => {
             </div>
           </section>
           <section className="api-metrics">
-  <h3>Métriques de l'API</h3>
-  <div className="metrics-filter">
-  <div className="metrics-header" style={{ display: "flex", alignItems: "center", gap: "20px" }}>
+          <h3>Métriques de l'API</h3>
+          <div style={{ display: "flex", alignItems: "center", gap: "20px", marginBottom: "20px" }}>
         <select
           value={selectedType}
           onChange={(e) => setSelectedType(e.target.value)}
           style={{
+            
             border: "none",
             background: "transparent",
             fontSize: "16px",
             color: "#003348",
             cursor: "pointer",
             outline: "none",
-            margin: 0,
+            
           }}
         >
-          <option value="Success">Success</option>
-          <option value="Errors">Errors</option>
+          <option value="Succée">Succès</option>
+          <option value="Erreur utilisation">Erreurs d'Utilisation</option>
         </select>
-        <div style={{ display: "flex", gap: "20px" }}>
-          {["daily_last_30", "daily_last_month", "monthly_last_year"].map((period) => (
-            <button
-              key={period}
-              onClick={() => setSelectedPeriod(period)}
-              style={{
-                border: "none",
-                background: "transparent",
-                fontSize: "16px",
-                color: selectedPeriod === period ? "#000" : "#003348",
-                fontWeight: selectedPeriod === period ? "bold" : "normal",
-                textDecoration: selectedPeriod === period ? "underline" : "none",
-                cursor: "pointer",
-              }}
-            >
-              {period}
-            </button>
-          ))}
-        </div>
-        </div>
-  </div>
-  <div className="metrics-chart">
-    <ResponsiveContainer width="100%" height={300}>
-      <LineChart data={getData()}>
-        <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="name" />
-        <YAxis />
-        <Tooltip />
-        <Line
-          type="monotone"
-          dataKey="traffic"
-          stroke="#003348"
-          activeDot={{ r: 8 }}
-        />
-      </LineChart>
-    </ResponsiveContainer>
-  </div>
-</section>
+        <div>
+  {["daily_last_30", "daily_last_month", "monthly_last_year"].map((period) => (
+    <button
+      key={period}
+      onClick={() => setSelectedPeriod(period)}
+      style={{
+        border: "none",
+        background: "transparent",
+        fontSize: "16px",
+        color: selectedPeriod === period ? "#000" : "#003348",
+        fontWeight: selectedPeriod === period ? "bold" : "normal",
+        textDecoration: selectedPeriod === period ? "underline" : "none",
+        cursor: "pointer",
+      }}
+    >
+      {{
+        daily_last_30: "Derniers 30 jours",
+        daily_last_month: "Mois dernier",
+        monthly_last_year: "Année dernière (par mois)",
+      }[period]}
+    </button>
+   ))}
+ </div>
+      </div>
+      <div>
+        {prepareChartData() ? (
+          <Line data={prepareChartData()} />
+        ) : (
+          <div>Aucune donnée disponible pour le type et la période sélectionnés.</div>
+        )}
+      </div>
+
+         </section>
 
     </div>
       </div>
