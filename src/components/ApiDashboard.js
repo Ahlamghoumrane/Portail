@@ -31,7 +31,13 @@ const ApiDashboard = () => {
   };
   const [serviceCode, setServiceCode] = useState(''); 
   const [tokenData, setTokenData] = useState(null);
-  
+   const apiNames = {
+    LIVENESS: "Visage & ID Matching",
+    POA: "Justificatif de domicile",
+    "DOC-BUSINESS": "Document d’entreprise",
+    "PEP-SANCTION": "PPE & Sanction Screening",
+  };
+    const apiName = apiNames[serviceCode] || "Nom inconnu";
   
   useEffect(() => {
     const fetchServiceToken = async () => {
@@ -152,10 +158,15 @@ const ApiDashboard = () => {
     }, [serviceCode]);
     
     const prepareChartData = () => {
-      if (!metricsData.data || !metricsData.data[selectedType]) return null;
-  
-      const data = metricsData.data[selectedType][selectedPeriod];
+      const data = metricsData.data?.[selectedType]?.[selectedPeriod];
+    
+      if (!data || data.length === 0) {
+        console.log("Aucune donnée disponible pour ce type et cette période.");
+        return null; 
+      }
+    
       const sortedData = data.sort((a, b) => new Date(a.date) - new Date(b.date));
+    
       return {
         labels: sortedData.map((item) => item.date),
         datasets: [
@@ -170,7 +181,7 @@ const ApiDashboard = () => {
           },
         ],
       };
-    };
+    };    
   
   const location = useLocation();
 const { apiServiceCode, apiImage,apidocumentationLink } = location.state || {};
@@ -220,24 +231,24 @@ useEffect(() => {
       </header>
       <div className="dashboard-layout">
         <aside className="sidebar">
-        {apiServiceCode && apiImage && (
+        {apiName && apiImage && (
   <div className="api-info">
-    <img src={apiImage} alt={apiServiceCode} style={{ width: "150px", height: "80px",marginTop:"20px" }} />
-    <span className="api-name"s>{apiServiceCode}</span>  
+    <img src={apiImage} alt={apiName} style={{ width: "150px", height: "80px",marginTop:"20px" }} />
+    <span className="api-name">{apiName}</span>  
   </div>
 )}    
        <ul>
           <li>
-          <Link to="/ApiDashboard" state={{ apiServiceCode, apiImage }} className={getLinkClass("/ApiDashboard")}>
+          <Link to="/ApiDashboard" state={{apiServiceCode:serviceCode, apiImage }} className={getLinkClass("/ApiDashboard")}>
           <img src={Tableaudebord} alt="Tableau de bord" /> Tableau de bord </Link>
           </li>
           <li>
-            <Link to="/Documentation" state={{ apiServiceCode, apiImage ,apidocumentationLink}} className={getLinkClass("/Documentation")}>
+            <Link to="/Documentation" state={{apiServiceCode:serviceCode, apiImage ,apidocumentationLink}} className={getLinkClass("/Documentation")}>
             <img src={Documentation2} alt="Documentation"  />Documentation
             </Link>
           </li>
           <li>
-            <Link to="/LiveInterface" state={{ apiServiceCode, apiImage }}className={getLinkClass("/LiveInterface")}>
+            <Link to="/LiveInterface" state={{ apiServiceCode:serviceCode, apiImage }}className={getLinkClass("/LiveInterface")}>
             <img src={liveinterface} alt="liveinterface" />Interface en direct
             </Link>
           </li>
@@ -330,7 +341,9 @@ useEffect(() => {
         {prepareChartData() ? (
           <Line data={prepareChartData()} />
         ) : (
-          <div>Aucune donnée disponible pour le type et la période sélectionnés.</div>
+          <div style={{ color: "#003348", fontWeight: "bold", textAlign: "center" }}>
+      Aucune donnée disponible pour le type et la période sélectionnés.
+    </div>
         )}
       </div>
 

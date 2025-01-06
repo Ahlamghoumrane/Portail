@@ -31,6 +31,20 @@ const LiveInterface = () => {
    const getLinkClass = (path) => {
     return location.pathname === path ? "active-link" : "inactive-link";
   };
+  const [serviceCode, setServiceCode] = useState(''); 
+    useEffect(() => {
+      if (apiServiceCode) {
+        setServiceCode(apiServiceCode);
+      }
+    }, [apiServiceCode]);
+      
+    const apiNames = {
+      LIVENESS: "Visage & ID Matching",
+      POA: "Justificatif de domicile",
+      "DOC-BUSINESS": "Document d’entreprise",
+      "PEP-SANCTION": "PPE & Sanction Screening",
+    };
+      const apiName = apiNames[serviceCode] || "Nom inconnu";
 
   return (
     <div className="dashboard-container">
@@ -47,24 +61,24 @@ const LiveInterface = () => {
       </header>
       <div className="dashboard-layout">
         <aside className="sidebar">
-        { apiServiceCode && apiImage && (
+        { apiName && apiImage && (
   <div className="api-info">
-    <img src={apiImage} alt={ apiServiceCode} style={{ width: "150px", height: "80px",marginTop:"20px" }}  />
-    <span className="api-name">{ apiServiceCode}</span>  
+    <img src={apiImage} alt={ apiName} style={{ width: "150px", height: "80px",marginTop:"20px" }}  />
+    <span className="api-name">{ apiName}</span>  
   </div>
 )}
         <ul>
           <li>
-          <Link to="/ApiDashboard" state={{  apiServiceCode, apiImage }} className={getLinkClass("/ApiDashboard")}>
+          <Link to="/ApiDashboard" state={{  apiServiceCode:serviceCode, apiImage }} className={getLinkClass("/ApiDashboard")}>
           <img src={Tableaudebord} alt="Tableau de bord"  /> Tableau de bord </Link>
           </li>
           <li>
-            <Link to="/Documentation" state={{  apiServiceCode, apiImage, apidocumentationLink }}className={getLinkClass("/Documentation")}>
+            <Link to="/Documentation" state={{  apiServiceCode:serviceCode, apiImage, apidocumentationLink }}className={getLinkClass("/Documentation")}>
             <img src={Documentation2} alt="Documentation"  />Documentation
             </Link>
           </li>
           <li>
-            <Link to="/LiveInterface" state={{  apiServiceCode, apiImage }}className={getLinkClass("/LiveInterface")}>
+            <Link to="/LiveInterface" state={{  apiServiceCode:serviceCode, apiImage }}className={getLinkClass("/LiveInterface")}>
             <img src={liveinterface} alt="liveinterface"  />Interface en direct
             </Link>
           </li>
