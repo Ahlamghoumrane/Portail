@@ -77,7 +77,7 @@ const [isLoading, setIsLoading] = useState(true);
             </Link>
           </li>
           <li>
-            <Link to="/LiveInterface" state={{  apiServiceCode, apiImage }} className={getLinkClass("/LiveInterface")}>
+            <Link to="/LiveInterface" state={{  apiServiceCode:serviceCode, apiImage }} className={getLinkClass("/LiveInterface")}>
             <img src={liveinterface} alt="liveinterface"  />Interface en direct
             </Link>
           </li>

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { supabase } from "../supabaseClient";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,Link } from "react-router-dom";
 import logo from "../assets/logo.jpg";
 import "../styles/Login.css";
 
@@ -95,6 +95,9 @@ const Login = () => {
               <label htmlFor="password" className={password ? "active" : ""}>
                 Mot de passe
               </label>
+            </div>
+            <div className="forgot-password">
+              <Link to="/ForgotPassword">Mot de passe oublié ?</Link>
             </div>
             <button
               type="submit"
